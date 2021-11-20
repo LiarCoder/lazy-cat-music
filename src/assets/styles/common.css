@@ -1,0 +1,195 @@
+blockquote,
+body,
+dd,
+dl,
+dt,
+fieldset,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+html,
+iframe,
+input,
+legend,
+li,
+ol,
+p,
+pre,
+td,
+textarea,
+th,
+ul {
+    padding: 0;
+    margin: 0
+}
+
+html {
+    -webkit-overflow-scrolling: touch;
+    -webkit-text-size-adjust: 100%
+}
+
+body {
+    -webkit-overflow-scrolling: touch;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+a,
+body,
+input,
+input:focus,
+select,
+select:focus,
+textarea,
+textarea:focus {
+    -webkit-tap-highlight-color: transparent;
+    outline: 0;
+    -webkit-appearance: none
+}
+
+li {
+    list-style-type: none
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+fieldset {
+    border: none
+}
+
+legend {
+    display: none
+}
+
+a:active,
+a:hover,
+button {
+    outline: 0
+}
+
+input[type=checkbox],
+input[type=radio] {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+em,
+i {
+    font-style: normal
+}
+
+a {
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent
+}
+
+@media screen and (min-width:1440px) {
+    html {
+        font-size: 200%
+    }
+}
+
+@media screen and (max-width:1440px) {
+    html {
+        font-size: 200%
+    }
+}
+
+@media screen and (max-width:1024px) {
+    html {
+        font-size: 200%
+    }
+}
+
+@media screen and (max-width:980px) {
+    html {
+        font-size: 200%
+    }
+}
+
+@media screen and (max-width:720px) {
+    html {
+        font-size: 200%
+    }
+}
+
+@media screen and (max-width:640px) {
+    html {
+        font-size: 175%
+    }
+}
+
+@media screen and (max-width:540px) {
+    html {
+        font-size: 150%
+    }
+}
+
+@media screen and (max-width:480px) {
+    html {
+        font-size: 125%
+    }
+}
+
+@media screen and (max-width:400px) {
+    html {
+        font-size: 112.5%
+    }
+}
+
+@media screen and (max-width:360px) {
+    html {
+        font-size: 100%
+    }
+}
+
+@media screen and (max-width:320px) {
+    html {
+        font-size: 87.5%
+    }
+}
+
+@media screen and (max-width:240px) {
+    html {
+        font-size: 75%
+    }
+}
+
+body {
+    font-size: 1rem;
+    background: #fff;
+    color: #333;
+    position: relative;
+    font-family: 'Microsoft Yahei'
+}
+
+
+@-webkit-keyframes loads {
+    0% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0)
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+
+@keyframes loads {
+    0% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0)
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
