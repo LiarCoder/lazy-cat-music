@@ -1,16 +1,16 @@
 <!--
- * @Descripttion: 
- * @Version: 
+ * @Descripttion:
+ * @Version: 0.1.0
  * @Author: LiarCoder
  * @Date: 2021-11-19 19:59:29
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-20 01:17:09
+ * @LastEditTime: 2021-11-23 00:15:28
 -->
 <template lang="">
-<div class="header-top">
-  <a href="" class="logo"></a>
-  <a href="" class="btn-search"></a>
-</div>
+  <div class="header-top">
+    <a href="" class="logo"></a>
+    <a href="" class="btn-search"></a>
+  </div>
 </template>
 <script>
 export default {

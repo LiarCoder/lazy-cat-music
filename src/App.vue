@@ -4,10 +4,13 @@
  * @Author: LiarCoder
  * @Date: 2021-11-18 20:36:03
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-19 23:06:06
+ * @LastEditTime: 2021-11-23 14:45:31
 -->
 <template>
   <Header />
+  <div class="main-body">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -20,4 +23,7 @@ export default {
 </script>
 
 <style lang="less">
+.main-body {
+  margin-top: 6.4286rem;
+}
 </style>

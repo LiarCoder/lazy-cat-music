@@ -1,10 +1,10 @@
 <!--
- * @Descripttion: 
- * @Version: 
+ * @Descripttion:
+ * @Version:
  * @Author: LiarCoder
  * @Date: 2021-11-19 20:11:33
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-21 16:53:01
+ * @LastEditTime: 2021-11-21 21:29:13
 -->
 <template lang="">
   <div class="header-info-container">
@@ -21,7 +21,6 @@ export default {
 </script>
 <style lang="less" scoped>
 .header-info-container {
-  font-family: "Microsoft Yahei";
   background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
   padding: 0 2.1429rem;
   position: relative;
