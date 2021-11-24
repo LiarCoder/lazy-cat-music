@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:20:17
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-24 14:33:59
+ * @LastEditTime: 2021-11-25 00:04:52
 -->
 <template>
   <!-- <van-swipe :autoplay="3000" lazy-render> -->
@@ -16,7 +16,7 @@
     </van-swipe-item>
   </van-swipe>
 
-  <van-cell title="时代少年团 - 醉">
+  <van-cell class="latest-cell-wrapper" title="时代少年团 - 醉">
     <!-- 使用 right-icon 插槽来自定义右侧图标 -->
     <template #right-icon>
       <div>
@@ -25,7 +25,7 @@
     </template>
   </van-cell>
 
-  <van-cell title="王琪 - 压岁">
+  <van-cell class="latest-cell-wrapper" title="王琪 - 压岁">
     <template #right-icon>
       <div>
         <i></i>
@@ -33,7 +33,7 @@
     </template>
   </van-cell>
 
-  <van-cell title="李玉刚、MiniG迷你机 - 东方不败SWORDSMAN">
+  <van-cell class="latest-cell-wrapper" title="李玉刚、MiniG迷你机 - 东方不败SWORDSMAN">
     <template #right-icon>
       <div>
         <i></i>
@@ -55,7 +55,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .van-swipe {
   width: 100%;
   margin-top: 0.3571rem;
@@ -78,7 +78,7 @@ export default {
     }
   }
 }
-.van-cell {
+.latest-cell-wrapper {
   padding: 0 0 0 1.0714rem;
   height: 4.0714rem;
   align-items: center;

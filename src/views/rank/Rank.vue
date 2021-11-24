@@ -4,17 +4,16 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:22:47
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-24 18:01:00
+ * @LastEditTime: 2021-11-25 00:04:42
 -->
 <template>
-  <van-cell>
+  <van-cell class="rank-cell-wrapper">
     <template #title>
       <img src="https://imgessl.kugou.com/mcommon/400/20181019/20181019122513972113.jpg" alt="" />
     </template>
     <template #value>
       <span>TOP500</span>
     </template>
-
     <template #right-icon>
       <div class="right-arrow-icon">
         <img src="http://m.kugou.com/v3/static/images/index/arrow_icon.png" alt="" />
@@ -22,14 +21,13 @@
     </template>
   </van-cell>
 
-  <van-cell>
+  <van-cell class="rank-cell-wrapper">
     <template #title>
       <img src="https://imgessl.kugou.com/mcommon/400/20190906/20190906162520714932.jpg" alt="" />
     </template>
     <template #value>
       <span>描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述</span>
     </template>
-
     <template #right-icon>
       <div class="right-arrow-icon">
         <img src="http://m.kugou.com/v3/static/images/index/arrow_icon.png" alt="" />
@@ -45,10 +43,10 @@ export default {
 </script>
 
 <style lang="less">
-.van-cell {
+.rank-cell-wrapper {
   padding: 0.7143rem 0 0.7143rem 0.7143rem;
 
-  img {
+  & > img {
     display: block;
   }
 

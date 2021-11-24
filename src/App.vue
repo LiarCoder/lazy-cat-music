@@ -4,14 +4,16 @@
  * @Author: LiarCoder
  * @Date: 2021-11-18 20:36:03
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-23 23:05:17
+ * @LastEditTime: 2021-11-24 21:57:00
 -->
 <template>
   <Header />
   <div class="main-body">
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
+    <router-view v-slot="{ Component }">
+      <keep-alive>
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
   </div>
 </template>
 
