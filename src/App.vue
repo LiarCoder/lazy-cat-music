@@ -4,12 +4,14 @@
  * @Author: LiarCoder
  * @Date: 2021-11-18 20:36:03
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-23 14:45:31
+ * @LastEditTime: 2021-11-23 23:05:17
 -->
 <template>
   <Header />
   <div class="main-body">
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -24,6 +26,7 @@ export default {
 
 <style lang="less">
 .main-body {
-  margin-top: 6.4286rem;
+  // 下面这里不能写成 margin-top，否则【新歌】页面的轮播图的顶部就会有一部分被遮住
+  padding-top: 6.4286rem;
 }
 </style>
