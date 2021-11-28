@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-18 20:36:03
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-22 21:42:00
+ * @LastEditTime: 2021-11-26 22:29:38
  */
 
 import { createRouter, createWebHashHistory } from "vue-router";
@@ -64,6 +64,18 @@ const routes = [
     name: "Search",
     path: "/search",
     component: () => import("@/views/search/Search"),
+    children: [
+      {
+        name: "SearchRecentHot",
+        path: "recent-hot",
+        component: () => import("@/views/search/SearchRecentHot"),
+      },
+      {
+        name: "SearchResult",
+        path: "result",
+        component: () => import("@/views/search/SearchResult"),
+      },
+    ],
   },
 ];
 

@@ -4,10 +4,10 @@
  * @Author: LiarCoder
  * @Date: 2021-11-20 19:55:09
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-21 01:29:38
+ * @LastEditTime: 2021-11-26 20:43:31
  */
 
-import { Tab, Tabs, Slider, Loading, Swipe, SwipeItem, Cell, CellGroup } from "vant";
+import { Tab, Tabs, Slider, Loading, Swipe, SwipeItem, Cell, CellGroup, Search } from "vant";
 
 export default {
   install(app) {
@@ -19,5 +19,6 @@ export default {
     app.use(SwipeItem);
     app.use(Cell);
     app.use(CellGroup);
+    app.use(Search);
   },
 };
