@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:21:41
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-25 00:53:31
+ * @LastEditTime: 2021-11-25 11:52:30
 -->
 <template>
   <van-cell class="rank-cell-wrapper">
@@ -83,14 +83,6 @@ export default {
       text-overflow: ellipsis;
     }
     i.icon-music {
-      font-family: "Microsoft Yahei";
-      list-style-type: none;
-      -webkit-tap-highlight-color: transparent;
-      line-height: 2.685rem;
-      font-size: 1.0714rem;
-      color: #333;
-      white-space: nowrap;
-      font-style: normal;
       width: 0.7143rem;
       height: 0.7143rem;
       margin-top: 0.10714rem;

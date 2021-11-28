@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:29:19
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-26 01:02:06
+ * @LastEditTime: 2021-11-27 15:56:58
 -->
 <template>
   <div class="rank-info-wrapper">
@@ -21,25 +21,34 @@
     <hr />
 
     <div class="rank-info-list">
-      <van-cell class="latest-cell-wrapper" data-rank-before="1" title="青睐 - 贩卖人间黄昏">
+      <van-cell class="latest-cell-wrapper" title="青睐 - 贩卖人间黄昏">
         <template #right-icon>
           <div><i></i></div>
         </template>
       </van-cell>
 
-      <van-cell class="latest-cell-wrapper" data-rank-before="2" title="桃沢晴 - 云边小卖铺">
+      <van-cell class="latest-cell-wrapper" title="桃沢晴 - 云边小卖铺">
         <template #right-icon>
           <div><i></i></div>
         </template>
       </van-cell>
 
-      <van-cell class="latest-cell-wrapper" data-rank-before="3" title="青睐 - 夏の景色 (夏日风光)">
+      <van-cell class="latest-cell-wrapper" title="青睐 - 夏の景色 (夏日风光)">
         <template #right-icon>
           <div><i></i></div>
         </template>
       </van-cell>
-
-      <van-cell class="latest-cell-wrapper" data-rank-before="4" title="桃沢晴 - 晨起暮落">
+      <van-cell class="latest-cell-wrapper" title="桃沢晴 - 晨起暮落">
+        <template #right-icon>
+          <div><i></i></div>
+        </template>
+      </van-cell>
+      <van-cell class="latest-cell-wrapper" title="桃沢晴 - 晨起暮落">
+        <template #right-icon>
+          <div><i></i></div>
+        </template>
+      </van-cell>
+      <van-cell class="latest-cell-wrapper" title="桃沢晴 - 晨起暮落">
         <template #right-icon>
           <div><i></i></div>
         </template>

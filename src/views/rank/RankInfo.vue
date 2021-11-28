@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:30:35
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-25 23:48:57
+ * @LastEditTime: 2021-11-26 19:20:22
 -->
 <template>
   <div class="rank-info-wrapper">
@@ -46,7 +46,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .rank-info-wrapper {
   transform: translateY(-3.2143rem);
   .rank-info-top {

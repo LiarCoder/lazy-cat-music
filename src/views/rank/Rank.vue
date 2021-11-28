@@ -4,10 +4,10 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:22:47
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-25 00:04:42
+ * @LastEditTime: 2021-11-25 17:16:38
 -->
 <template>
-  <van-cell class="rank-cell-wrapper">
+  <van-cell class="rank-cell-wrapper" to="/rank/info">
     <template #title>
       <img src="https://imgessl.kugou.com/mcommon/400/20181019/20181019122513972113.jpg" alt="" />
     </template>
