@@ -4,53 +4,54 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:20:17
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-25 00:04:52
+ * @LastEditTime: 2021-11-30 21:28:46
 -->
 <template>
   <!-- <van-swipe :autoplay="3000" lazy-render> -->
-  <van-swipe :autoplay="0" lazy-render>
-    <van-swipe-item v-for="image in images" :key="image">
-      <a href="">
-        <img :src="image" />
+  <van-swipe :autoplay="3000" lazy-render>
+    <van-swipe-item v-for="banner in banners" :key="banner.id">
+      <a :href="banner.extra.tourl">
+        <img :src="banner.imgurl" :title="banner.title" />
       </a>
     </van-swipe-item>
   </van-swipe>
 
-  <van-cell class="latest-cell-wrapper" title="时代少年团 - 醉">
+  <van-cell
+    v-for="song in songs"
+    :key="song.audio_id"
+    :title="song.filename"
+    class="latest-cell-wrapper"
+  >
     <!-- 使用 right-icon 插槽来自定义右侧图标 -->
     <template #right-icon>
-      <div>
-        <i></i>
-      </div>
-    </template>
-  </van-cell>
-
-  <van-cell class="latest-cell-wrapper" title="王琪 - 压岁">
-    <template #right-icon>
-      <div>
-        <i></i>
-      </div>
-    </template>
-  </van-cell>
-
-  <van-cell class="latest-cell-wrapper" title="李玉刚、MiniG迷你机 - 东方不败SWORDSMAN">
-    <template #right-icon>
-      <div>
-        <i></i>
-      </div>
+      <div><i></i></div>
     </template>
   </van-cell>
 </template>
 
 <script>
+import { ref, onMounted } from "vue";
+import { getLatestSongs } from "@/api/latest-song";
 export default {
   name: "LatestSong",
   setup() {
-    const images = [
-      "https://img.yzcdn.cn/vant/apple-1.jpg",
-      "https://img.yzcdn.cn/vant/apple-2.jpg",
-    ];
-    return { images };
+    let banners = ref([]);
+    let songs = ref([]);
+
+    onMounted(() => {
+      getLatestSongs().then(
+        (result) => {
+          console.log(result);
+          // 千万不要忘记，如果要取由ref包裹的数据xxx，那么一定要通过 xxx.value 的形式
+          banners.value = result.banner;
+          songs.value = result.data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    });
+    return { banners, songs };
   },
 };
 </script>
