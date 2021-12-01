@@ -4,51 +4,27 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:29:19
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-27 15:56:58
+ * @LastEditTime: 2021-12-01 16:23:14
 -->
 <template>
   <div class="rank-info-wrapper">
     <div class="rank-info-top">
-      <img src="https://imgessl.kugou.com/custom/400/20210709/20210709010332148129.jpg" alt="" />
+      <img :src="playlistCoverURL" alt="" />
     </div>
 
     <div class="playlist-info-intro">
-      <p>
-        学习不努力，考试徒伤悲。很多时候，你是不是恨不得能拥有哆啦A梦的记忆面包，能瞬间记住所有知识点？先从美梦中醒醒啦！学习只能靠自己平常的努力积累，愿这些歌曲能让你快速进入学习状态！加油！
-      </p>
+      <p>{{ playlistIntro }}</p>
       <div><i></i></div>
     </div>
     <hr />
 
     <div class="rank-info-list">
-      <van-cell class="latest-cell-wrapper" title="青睐 - 贩卖人间黄昏">
-        <template #right-icon>
-          <div><i></i></div>
-        </template>
-      </van-cell>
-
-      <van-cell class="latest-cell-wrapper" title="桃沢晴 - 云边小卖铺">
-        <template #right-icon>
-          <div><i></i></div>
-        </template>
-      </van-cell>
-
-      <van-cell class="latest-cell-wrapper" title="青睐 - 夏の景色 (夏日风光)">
-        <template #right-icon>
-          <div><i></i></div>
-        </template>
-      </van-cell>
-      <van-cell class="latest-cell-wrapper" title="桃沢晴 - 晨起暮落">
-        <template #right-icon>
-          <div><i></i></div>
-        </template>
-      </van-cell>
-      <van-cell class="latest-cell-wrapper" title="桃沢晴 - 晨起暮落">
-        <template #right-icon>
-          <div><i></i></div>
-        </template>
-      </van-cell>
-      <van-cell class="latest-cell-wrapper" title="桃沢晴 - 晨起暮落">
+      <van-cell
+        v-for="song in songs"
+        :key="song.audio_id"
+        :title="song.filename"
+        class="latest-cell-wrapper"
+      >
         <template #right-icon>
           <div><i></i></div>
         </template>
@@ -58,8 +34,32 @@
 </template>
 
 <script>
+import { ref } from "vue";
+import { useRoute } from "vue-router";
+
+import { getPlaylistInfo } from "@/api/playlist";
+
 export default {
   name: "PlayListInfo",
+  setup() {
+    const route = useRoute();
+    let playlistCoverURL = ref("");
+    let playlistIntro = ref("");
+    let songs = ref([]);
+
+    getPlaylistInfo(route.params.specialID).then(
+      (result) => {
+        // console.log(result);
+        playlistCoverURL.value = result.info.list.imgurl.replace("{size}", "400");
+        playlistIntro.value = result.info.list.intro;
+        songs.value = result.list.list.info;
+      },
+      (error) => {
+        console.warn(error);
+      }
+    );
+    return { playlistCoverURL, playlistIntro, songs };
+  },
 };
 </script>
 

@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-30 14:00:23
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-30 20:08:20
+ * @LastEditTime: 2021-12-01 16:01:00
  */
 import request from "@/utils/request";
 
@@ -19,10 +19,10 @@ export const getPlaylist = () => {
 
 /**
  * @description: 获取某个歌单的具体信息
- * @param {String} listID 某个歌单的具体标识
+ * @param {String} specialID 某个歌单的具体标识
  * @return {Promise} 返回由Promise包装的响应结果，包含该歌单中的所有歌曲列表等信息
  */
 
-export const getPlaylistInfo = (listID) => {
-  return request(`/m_kugou/plist/list/${listID}`, "get", { json: true });
+export const getPlaylistInfo = (specialID) => {
+  return request(`/m_kugou/plist/list/${specialID}`, "get", { json: true });
 };

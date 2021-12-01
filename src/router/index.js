@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-18 20:36:03
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-30 23:07:44
+ * @LastEditTime: 2021-12-01 16:01:05
  */
 
 import { createRouter, createWebHashHistory } from "vue-router";
@@ -37,7 +37,7 @@ const routes = [
   },
   {
     name: "PlayListInfo",
-    path: "/playlist/info",
+    path: "/playlist/info/:specialID",
     component: () => import("@/views/playlist/PlayListInfo"),
   },
   {
