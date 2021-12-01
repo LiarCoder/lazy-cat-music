@@ -4,37 +4,47 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:31:59
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-26 22:09:08
+ * @LastEditTime: 2021-12-01 18:02:11
 -->
 <template>
-  <van-cell class="rank-cell-wrapper" to="/rank/info">
+  <van-cell
+    v-for="singer in singers"
+    :key="singer.singerid"
+    :to="`/singer/info/${singer.singerid}`"
+    class="rank-cell-wrapper"
+  >
     <template #title>
-      <img
-        src="https://imgessl.kugou.com/uploadpic/pass/softhead/400/20180515/20180515002522714.jpg"
-        alt=""
-      />
+      <img :src="singer.imgurl.replace('{size}', '400')" alt="歌手图片" />
     </template>
     <template #value>
-      <span>周杰伦</span>
-    </template>
-  </van-cell>
-
-  <van-cell class="rank-cell-wrapper">
-    <template #title>
-      <img
-        src="https://imgessl.kugou.com/uploadpic/pass/softhead/400/20200603/20200603112123228.jpg"
-        alt=""
-      />
-    </template>
-    <template #value>
-      <span>薛之谦</span>
+      <span>{{ singer.singername }}</span>
     </template>
   </van-cell>
 </template>
 
 <script>
+import { getSingerList } from "@/api/singer";
+import { useRoute } from "vue-router";
+import { ref } from "vue";
+
 export default {
   name: "SingerList",
+  setup() {
+    const route = useRoute();
+    let singers = ref([]);
+
+    getSingerList(route.params.classID).then(
+      (result) => {
+        // console.log(result);
+        singers.value = result.singers.list.info;
+      },
+      (error) => {
+        console.warn(error);
+      }
+    );
+
+    return { singers };
+  },
 };
 </script>
 

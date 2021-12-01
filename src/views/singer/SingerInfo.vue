@@ -4,50 +4,60 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:31:20
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-26 19:46:43
+ * @LastEditTime: 2021-12-01 18:30:12
 -->
 <template>
   <div class="rank-info-wrapper">
     <div class="rank-info-top">
-      <img
-        src="https://imgessl.kugou.com/uploadpic/softhead/400/20200603/20200603112123228.jpg"
-        alt=""
-      />
+      <img :src="singerCoverURL" alt="歌手图片" />
     </div>
 
     <div class="playlist-info-intro">
-      <p>
-        薛之谦（Joker
-        Xue），1983年7月17日出生于上海，华语流行乐男歌手、影视演员、音乐制作人，毕业于格里昂酒店管理学院。
-        2005年，因参加选秀节目《我型我秀》而正式出道。2006年，发行首张同名专辑《薛之谦》，随后凭借歌曲《认真的雪》获得广泛关注。2007年，凭借专辑《你过得好吗》获得MusicRadio中国TOP排行榜内地年度最受欢迎男歌手奖。2008年，发行专辑《深深爱过你》；同年在上海举行个人首场演唱会“谦年传说”。2013年，专辑《几个薛之谦》获得MusicRadio中国TOP排行榜内地推荐唱片。2014年，凭借专辑《意外》获得第21届东方风云榜颁奖最佳唱作人；同年他还获得音悦V榜年度盛典年度创作歌手奖。
-        2015年6月，薛之谦首度担当制作人并发行原创EP《绅士》；同年，他还主演都市励志剧《妈妈像花儿一样》。2016年，凭借EP《绅士》《一半》获得第16届全球华语歌曲排行榜最受欢迎男歌手、五大最受欢迎男歌手奖、上海地区杰出歌手奖及最受欢迎创作歌手奖，而歌曲《初学者》则获得年度二十大金曲奖。2017年4月，开启“我好像在哪见过你”全国巡回演唱会；同年，薛之谦获得第7届全球流行音乐年度盛典年度最佳男歌手及MusicRadio榜中国TOP排行榜内地最佳男歌手。
-        2018年7月，薛之谦“摩天大楼”世界巡回演唱会于北京站启程，整个巡演横跨4大洲，8个国家，21个城市，累计上演场次23场。2019年2月14日，薛之谦在马来西亚举办巡回演唱会；同年12月27日，发行第十张个人专辑《尘》。2020年1月11日薛之谦获得年度原创音乐人。2020年12月31日，发行第11张个人专辑《天外来物》。
-      </p>
+      <p>{{ singerIntro }}</p>
       <div><i></i></div>
     </div>
     <hr />
 
     <div class="rank-info-list">
-      <van-cell class="latest-cell-wrapper" title="陪你去流浪 (Live)" label="薛之谦、锤娜丽莎">
-      </van-cell>
-
       <van-cell
+        v-for="song in songs"
+        :key="song.audio_id"
+        :title="song.filename.split(' - ')[1]"
+        :label="song.filename.split(' - ')[0]"
         class="latest-cell-wrapper"
-        title="敢爱敢做 (Live)"
-        label="林子祥、薛之谦、胡夏、锤娜丽莎"
       >
       </van-cell>
-
-      <van-cell class="latest-cell-wrapper" title="演员" label="薛之谦"> </van-cell>
-
-      <van-cell class="latest-cell-wrapper" title="天外来物" label="薛之谦"> </van-cell>
     </div>
   </div>
 </template>
 
 <script>
+import { getSingerInfo } from "@/api/singer";
+import { useRoute } from "vue-router";
+import { ref } from "vue";
+
 export default {
   name: "SingerInfo",
+  setup() {
+    const route = useRoute();
+    let singerCoverURL = ref("");
+    let singerIntro = ref("");
+    let songs = ref([]);
+
+    getSingerInfo(route.params.singerID).then(
+      (result) => {
+        // console.log(result);
+        singerCoverURL.value = result.info.imgurl.replace("{size}", "400");
+        singerIntro.value = result.info.intro;
+        songs.value = result.songs.list;
+      },
+      (error) => {
+        console.warn(error);
+      }
+    );
+
+    return { singerCoverURL, singerIntro, songs };
+  },
 };
 </script>
 

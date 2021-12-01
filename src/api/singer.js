@@ -4,16 +4,25 @@
  * @Author: LiarCoder
  * @Date: 2021-11-30 14:00:53
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-30 19:59:15
+ * @LastEditTime: 2021-12-01 17:00:44
  */
 
 import request from "@/utils/request";
+
+/**
+ * @description: 获取歌手分类列表
+ * @return {Promise} 返回由Promise包装的响应结果，包含各种歌手分类
+ */
+export const getSingerClass = () => {
+  return request(`/m_kugou/singer/class`, "get", { json: true });
+};
 
 /**
  * @description: 获取歌手列表
  * @param {String} classID 歌手在分类列表中的ID
  * @return {Promise} 返回由Promise包装的响应结果，包含对应分类的歌手列表
  */
+
 export const getSingerList = (classID) => {
   return request(`/m_kugou/singer/list/${classID}`, "get", { json: true });
 };
