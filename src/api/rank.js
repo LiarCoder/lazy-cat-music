@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-30 14:00:30
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-30 20:06:26
+ * @LastEditTime: 2021-11-30 23:54:47
  */
 
 import request from "@/utils/request";
@@ -20,13 +20,13 @@ export const getRankList = () => {
 
 /**
  * @description: 获取某个排行的具体信息
- * @param {String} listID 某个排行的具体标识
+ * @param {String} rankID 某个排行的具体标识
  * @return {Promise} 返回由Promise包装的响应结果，包含该排行中的所有歌曲列表等信息
  */
 
-export const getRankListInfo = (listID) => {
+export const getRankListInfo = (rankID) => {
   return request("/m_kugou/rank/info/", "get", {
-    rankid: listID,
+    rankid: rankID,
     page: 1,
     json: true,
   });

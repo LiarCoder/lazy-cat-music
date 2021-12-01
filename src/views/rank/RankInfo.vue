@@ -4,34 +4,22 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:30:35
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-26 19:20:22
+ * @LastEditTime: 2021-12-01 13:47:34
 -->
 <template>
   <div class="rank-info-wrapper">
     <div class="rank-info-top">
-      <img src="https://imgessl.kugou.com/mcommon/400/20181019/20181019122516438289.jpg" alt="" />
-      <span>上次更新时间：2021-11-25</span>
+      <img :src="rankCoverURL" alt="排行封面图" />
+      <span>上次更新时间：{{ lastUpdateTime }}</span>
     </div>
     <div class="rank-info-list">
-      <van-cell class="latest-cell-wrapper" data-rank-before="1" title="张杰、张碧晨 - 只要平凡">
-        <template #right-icon>
-          <div><i></i></div>
-        </template>
-      </van-cell>
-
-      <van-cell class="latest-cell-wrapper" data-rank-before="2" title="江珊 - 梦里水乡">
-        <template #right-icon>
-          <div><i></i></div>
-        </template>
-      </van-cell>
-
-      <van-cell class="latest-cell-wrapper" data-rank-before="3" title="张靓颖、李荣浩 - 女儿国">
-        <template #right-icon>
-          <div><i></i></div>
-        </template>
-      </van-cell>
-
-      <van-cell class="latest-cell-wrapper" data-rank-before="4" title="许家豪 - 删了吧 (新版)">
+      <van-cell
+        v-for="(song, index) in songs"
+        :key="song.audio_id"
+        :title="song.filename"
+        :data-rank-before="index + 1"
+        class="latest-cell-wrapper"
+      >
         <template #right-icon>
           <div><i></i></div>
         </template>
@@ -41,8 +29,30 @@
 </template>
 
 <script>
+import { useRoute } from "vue-router";
+import { ref } from "vue";
+import { getRankListInfo } from "@/api/rank";
+
 export default {
   name: "RankInfo",
+  setup() {
+    let rankCoverURL = ref("");
+    let lastUpdateTime = new Date().toLocaleDateString().replaceAll("\/", "-");
+    let songs = ref([]);
+    const route = useRoute();
+    getRankListInfo(route.params.rankID).then(
+      (result) => {
+        // console.log(result);
+        // rankCoverURL.value = result.info.imgurl.replace("{size}", "400");
+        rankCoverURL.value = result.info.banner7url.replace("{size}", "400");
+        songs.value = result.songs.list;
+      },
+      (error) => {
+        console.warn(error);
+      }
+    );
+    return { rankCoverURL, lastUpdateTime, songs };
+  },
 };
 </script>
 

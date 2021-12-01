@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-18 20:36:03
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-26 22:29:38
+ * @LastEditTime: 2021-11-30 23:07:44
  */
 
 import { createRouter, createWebHashHistory } from "vue-router";
@@ -27,7 +27,7 @@ const routes = [
   },
   {
     name: "RankInfo",
-    path: "/rank/info",
+    path: "/rank/info/:rankID",
     component: () => import("@/views/rank/RankInfo"),
   },
   {

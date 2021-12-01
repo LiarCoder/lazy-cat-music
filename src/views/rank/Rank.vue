@@ -4,41 +4,48 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:22:47
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-25 17:16:38
+ * @LastEditTime: 2021-12-01 00:10:15
 -->
 <template>
-  <van-cell class="rank-cell-wrapper" to="/rank/info">
+  <van-cell
+    v-for="rank in rankList"
+    :key="rank.rankid"
+    :to="`/rank/info/${rank.rankid}`"
+    class="rank-cell-wrapper"
+  >
     <template #title>
-      <img src="https://imgessl.kugou.com/mcommon/400/20181019/20181019122513972113.jpg" alt="" />
+      <img :src="rank.imgurl.replace('{size}', '400')" alt="排行封面" />
     </template>
     <template #value>
-      <span>TOP500</span>
+      <span>{{ rank.rankname }}</span>
     </template>
     <template #right-icon>
-      <div class="right-arrow-icon">
-        <img src="http://m.kugou.com/v3/static/images/index/arrow_icon.png" alt="" />
-      </div>
-    </template>
-  </van-cell>
-
-  <van-cell class="rank-cell-wrapper">
-    <template #title>
-      <img src="https://imgessl.kugou.com/mcommon/400/20190906/20190906162520714932.jpg" alt="" />
-    </template>
-    <template #value>
-      <span>描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述</span>
-    </template>
-    <template #right-icon>
-      <div class="right-arrow-icon">
-        <img src="http://m.kugou.com/v3/static/images/index/arrow_icon.png" alt="" />
-      </div>
+      <div class="right-arrow-icon"><i></i></div>
     </template>
   </van-cell>
 </template>
 
 <script>
+import { getRankList } from "@/api/rank";
+import { ref } from "vue";
+
 export default {
   name: "Rank",
+  setup() {
+    let rankList = ref([]);
+
+    getRankList().then(
+      (result) => {
+        // console.log(result);
+        rankList.value = result.rank.list;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    return { rankList };
+  },
 };
 </script>
 
@@ -88,14 +95,16 @@ export default {
     align-items: center;
     justify-content: center;
 
-    img {
+    i {
       cursor: pointer;
       text-align: center;
       font-style: normal;
-      // width: 1.0357rem;
-      height: 1.0814rem;
+      width: 0.57143rem;
+      height: 1rem;
       // margin-top: 1.5rem;
       display: inline-block;
+      background: url("~@/assets/images/arrow_icon.png") no-repeat;
+      background-size: 100%;
     }
   }
 }
