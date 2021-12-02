@@ -4,39 +4,46 @@
  * @Author: LiarCoder
  * @Date: 2021-11-26 22:07:29
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-26 23:41:54
+ * @LastEditTime: 2021-12-01 23:18:15
 -->
 <template>
-  <div class="search-result">共有404条结果</div>
-  <van-cell class="latest-cell-wrapper" title="薛之谦、锤娜丽莎 - 陪你去流浪 (Live)">
-    <!-- 使用 right-icon 插槽来自定义右侧图标 -->
+  <div class="search-result">共有{{ resultAmount }}条结果</div>
+  <van-cell
+    v-for="song in searchResults"
+    :key="song.audio_id"
+    :title="song.filename"
+    class="latest-cell-wrapper"
+  >
     <template #right-icon>
-      <div>
-        <i></i>
-      </div>
-    </template>
-  </van-cell>
-
-  <van-cell class="latest-cell-wrapper" title="薛之谦 - 天外来物">
-    <template #right-icon>
-      <div>
-        <i></i>
-      </div>
-    </template>
-  </van-cell>
-
-  <van-cell class="latest-cell-wrapper" title="薛之谦 - 演员">
-    <template #right-icon>
-      <div>
-        <i></i>
-      </div>
+      <div><i></i></div>
     </template>
   </van-cell>
 </template>
 
 <script>
+import { ref } from "vue";
+import { getSearchResult } from "@/api/search";
+
 export default {
   name: "SearchResult",
+  props: ["keyword"],
+  setup(props) {
+    let searchResults = ref([]);
+    let resultAmount = ref(0);
+    // console.log(props);
+    getSearchResult(props.keyword).then(
+      (result) => {
+        // console.log(result);
+        searchResults.value = result.data.info;
+        resultAmount.value = result.data.total;
+      },
+      (error) => {
+        console.warn(error);
+      }
+    );
+
+    return { searchResults, resultAmount };
+  },
 };
 </script>
 

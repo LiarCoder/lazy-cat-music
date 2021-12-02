@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-30 14:00:46
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-30 20:03:38
+ * @LastEditTime: 2021-12-01 22:39:32
  */
 
 import request from "@/utils/request";
@@ -16,7 +16,7 @@ import request from "@/utils/request";
 
 export const getRecentHotList = () => {
   return request("/mobliecdn_kugou/api/v3/search/hot", "get", {
-    format: json,
+    format: "json",
     plat: 0,
     count: 30,
   });
@@ -31,7 +31,7 @@ export const getRecentHotList = () => {
 export const getSearchResult = (keyword) => {
   return request("/mobliecdn_kugou/api/v3/search/song", "get", {
     keyword,
-    format: json,
+    format: "json",
     page: 1,
     pagesize: 30,
     showtype: 1,

@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:23:25
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-26 23:06:31
+ * @LastEditTime: 2021-12-02 14:55:26
 -->
 <template>
   <van-search v-model="value" show-action placeholder="歌手/歌名/拼音" @search="onSearch">
@@ -13,17 +13,28 @@
     </template>
   </van-search>
   <div class="search-panel">
-    <router-view></router-view>
+    <router-view :keyword="value"></router-view>
   </div>
 </template>
 
 <script>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
 export default {
   name: "Search",
   setup() {
     const value = ref("");
-    return { value };
+    const router = useRouter();
+
+    let onSearch = () => {
+      console.log(router.currentRoute.value.path);
+      if (router.currentRoute.value.path === "/search/result") {
+        return;
+      }
+      router.push({ path: "/search/result" });
+    };
+    return { value, onSearch };
   },
 };
 </script>

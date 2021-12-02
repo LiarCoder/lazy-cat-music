@@ -4,20 +4,35 @@
  * @Author: LiarCoder
  * @Date: 2021-11-26 22:07:04
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-26 23:36:35
+ * @LastEditTime: 2021-12-02 13:55:39
 -->
 <template>
   <div class="search-recent-hot">最近热门</div>
-  <van-cell title="独家首发" />
-  <van-cell title="儿歌大全" />
-  <van-cell title="动漫" />
-  <van-cell title="洗脑电音" />
-  <van-cell title="情歌大全" />
+  <van-cell v-for="hot in recentHotList" :key="hot.sort" :title="hot.keyword" class="recent-hot" />
 </template>
 
 <script>
+import { getRecentHotList } from "@/api/search";
+import { ref } from "vue";
+
 export default {
   name: "SearchRecentHot",
+  props: ["keyword"],
+  setup() {
+    let recentHotList = ref([]);
+
+    getRecentHotList().then(
+      (result) => {
+        // console.log(result);
+        recentHotList.value = result.data.info;
+      },
+      (error) => {
+        console.warn(error);
+      }
+    );
+
+    return { recentHotList };
+  },
 };
 </script>
 
@@ -31,7 +46,7 @@ export default {
     font-size: 0.8571rem;
     color: #2ca2f9;
   }
-  .van-cell {
+  .van-cell.recent-hot {
     padding: 0 0 0 0.7143rem;
     .van-cell__title {
       height: 3.5714rem;
