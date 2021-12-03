@@ -4,23 +4,37 @@
  * @Author: LiarCoder
  * @Date: 2021-11-26 22:07:04
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-02 13:55:39
+ * @LastEditTime: 2021-12-03 15:18:51
 -->
 <template>
   <div class="search-recent-hot">最近热门</div>
-  <van-cell v-for="hot in recentHotList" :key="hot.sort" :title="hot.keyword" class="recent-hot" />
+  <van-cell
+    v-for="hot in recentHotList"
+    :key="hot.sort"
+    :title="hot.keyword"
+    class="recent-hot"
+    @click="searchHot(hot.keyword)"
+  />
 </template>
 
 <script>
-import { getRecentHotList } from "@/api/search";
 import { ref } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { getRecentHotList } from "@/api/search";
 
 export default {
   name: "SearchRecentHot",
-  props: ["keyword"],
   setup() {
+    const store = useStore();
+    const router = useRouter();
     let recentHotList = ref([]);
 
+    let searchHot = (keyword) => {
+      store.state.search.keyword = keyword;
+      router.push({ path: "/search/result" });
+      store.dispatch("search/search");
+    };
     getRecentHotList().then(
       (result) => {
         // console.log(result);
@@ -31,7 +45,7 @@ export default {
       }
     );
 
-    return { recentHotList };
+    return { recentHotList, searchHot };
   },
 };
 </script>

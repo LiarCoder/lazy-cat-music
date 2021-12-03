@@ -4,37 +4,54 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:23:25
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-02 14:55:26
+ * @LastEditTime: 2021-12-03 15:11:35
 -->
 <template>
-  <van-search v-model="value" show-action placeholder="歌手/歌名/拼音" @search="onSearch">
+  <van-search
+    v-model="$store.state.search.keyword"
+    show-action
+    placeholder="歌手/歌名/拼音"
+    @search="onSearch"
+  >
     <template #action>
       <div @click="onSearch">搜索</div>
     </template>
   </van-search>
+
   <div class="search-panel">
-    <router-view :keyword="value"></router-view>
+    <!-- 缓存SearchRecentHot子组件 -->
+    <router-view v-slot="{ Component }">
+      <keep-alive include="SearchRecentHot">
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export default {
   name: "Search",
   setup() {
-    const value = ref("");
     const router = useRouter();
+    const store = useStore();
 
     let onSearch = () => {
-      console.log(router.currentRoute.value.path);
-      if (router.currentRoute.value.path === "/search/result") {
+      // console.log(keyword.value);
+      if (!store.state.search.keyword) {
+        console.log(router.currentRoute.value.path);
+        router.push({ path: "/search/recent-hot" });
         return;
       }
-      router.push({ path: "/search/result" });
+      if (router.currentRoute.value.path !== "/search/result") {
+        router.push({ path: "/search/result" });
+      }
+      store.dispatch("search/search");
     };
-    return { value, onSearch };
+    return { onSearch };
   },
 };
 </script>
