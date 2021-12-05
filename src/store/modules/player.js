@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-12-01 14:31:11
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-04 23:20:03
+ * @LastEditTime: 2021-12-05 00:41:59
  */
 
 import { getAudio, getLyric } from "@/api/player";
@@ -25,6 +25,8 @@ export default {
       status: {
         currentTime: 0,
         isPlaying: false,
+        isShowPlayerDetail: false,
+        isShowPlayerFooter: false,
       },
       list: {
         songs: [],
@@ -64,7 +66,7 @@ export default {
       state.audio.lyric = lyric;
       state.status.isPlaying = true;
     },
-    toggleStatus(state) {
+    togglePlayingStatus(state) {
       state.status.isPlaying = !state.status.isPlaying;
     },
   },
