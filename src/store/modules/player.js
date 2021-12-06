@@ -4,10 +4,13 @@
  * @Author: LiarCoder
  * @Date: 2021-12-01 14:31:11
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-06 17:18:27
+ * @LastEditTime: 2021-12-07 00:26:17
  */
 
 import { getAudio, getLyric } from "@/api/player";
+import processLyric from "@/utils/lyric";
+
+const defalutImg = "http://m.kugou.com/v3/static/images/index/logo_kugou.png";
 
 export default {
   namespaced: true,
@@ -19,9 +22,9 @@ export default {
         songName: "",
         songDuration: 0,
         singerName: "",
-        singerImg: "http://m.kugou.com/v3/static/images/index/logo_kugou.png",
-        albumImg: "http://m.kugou.com/v3/static/images/index/logo_kugou.png",
-        lyric: "",
+        singerImg: defalutImg,
+        albumImg: defalutImg,
+        lyric: [],
       },
       status: {
         currentTime: 0,
@@ -45,8 +48,6 @@ export default {
       ctx.state.list.index = index;
       ctx.commit("setSong", { audio, lyric });
     },
-
-    lyricProcessor() {},
 
     next(ctx) {
       let songs = ctx.state.list.songs;
@@ -74,9 +75,9 @@ export default {
       state.audio.songName = audio.songName;
       state.audio.songDuration = audio.timeLength;
       state.audio.singerName = audio.singerName;
-      state.audio.singerImg = audio.imgUrl;
-      state.audio.albumImg = audio.album_img;
-      state.audio.lyric = lyric;
+      state.audio.singerImg = audio.imgUrl || defalutImg;
+      state.audio.albumImg = audio.album_img || defalutImg;
+      state.audio.lyric = processLyric(lyric);
       state.status.isPlaying = true;
     },
 
@@ -94,7 +95,6 @@ export default {
 
     setCurrentTime(state, newCurrentTime) {
       state.audio.audioEle.currentTime = newCurrentTime;
-      // console.log(newCurrentTime);
     },
 
     toggleSetCurrentTimeManually(state) {

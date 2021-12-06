@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-27 19:27:59
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-06 17:41:29
+ * @LastEditTime: 2021-12-07 00:16:17
 -->
 <template>
   <div class="player-detail" v-show="$store.state.player.status.isShowPlayerDetail">
@@ -23,19 +23,21 @@
       </div>
 
       <div class="singer-img">
-        <img :src="$store.state.player.audio.albumImg.replace('{size}', '400')" alt="歌手图片" />
+        <img :src="$store.state.player.audio.albumImg.replace('{size}', '400')" alt="专辑封面" />
       </div>
 
       <div class="song-lyrics">
-        <!-- <p v-for=""></p> -->
-        <p>混音师：鲍锐</p>
-        <p class="current-lyric">母带处理工程师：鲍锐</p>
-        <p>简单点</p>
-        <p>简单点</p>
-        <p>简单点</p>
-        <p>简单点</p>
-        <p>简单点</p>
-        <p>简单点</p>
+        <div class="lyric-content" :style="{ marginTop: `${-lyricOffset}rem` }">
+          <p
+            v-for="lrc in $store.state.player.audio.lyric"
+            :class="{
+              'current-lyric': $store.state.player.status.currentTime >= lrc.timestamp,
+            }"
+            :key="lrc.timestamp"
+          >
+            {{ lrc.lyricText }}
+          </p>
+        </div>
       </div>
 
       <div class="player-slider">
@@ -81,6 +83,11 @@ export default {
     const value = ref(() => store.state.player.status.currentTime);
     const slider = ref(null);
 
+    let lyricOffset = computed(() => {
+      let offset = (document.querySelectorAll(".current-lyric").length - 1) * 1.7857;
+      return store.state.player.status.currentTime - store.state.player.status.currentTime + offset;
+    });
+
     let togglePlayerDetail = () => {
       store.commit("player/togglePlayerDetail");
     };
@@ -120,6 +127,7 @@ export default {
       togglePlayingStatus,
       prev,
       next,
+      lyricOffset,
     };
   },
 };
@@ -200,6 +208,10 @@ export default {
       overflow: hidden;
       text-align: center;
       color: #afabac;
+
+      .lyric-content {
+        transition: 0.3s;
+      }
 
       p {
         padding: 0;
