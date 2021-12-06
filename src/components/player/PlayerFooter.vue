@@ -4,11 +4,17 @@
  * @Author: LiarCoder
  * @Date: 2021-11-27 15:33:47
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-05 15:19:25
+ * @LastEditTime: 2021-12-06 17:33:59
 -->
 <template>
   <div class="player-footer" :class="{ 'player-footer-toggle': isHidePlayerFooter }">
-    <audio :src="$store.state.player.audio.songUrl" id="audioEle" autoplay></audio>
+    <audio
+      :src="$store.state.player.audio.songUrl"
+      ref="audioEle"
+      autoplay
+      @timeupdate="updateCurrentTime()"
+      @ended="next()"
+    ></audio>
     <img
       class="player-footer-control"
       :class="{ 'player-footer-toggle': isHidePlayerFooter }"
@@ -18,11 +24,15 @@
     />
     <van-cell>
       <template #title>
-        <img :src="$store.state.player.audio.albumImg.replace('{size}', '400')" alt="歌手图片" />
+        <img
+          :src="$store.state.player.audio.albumImg.replace('{size}', '400')"
+          alt="专辑封面"
+          @click="togglePlayerDetail()"
+        />
       </template>
       <template #value>
-        <p>{{ $store.state.player.audio.songName }}</p>
-        <p>{{ $store.state.player.audio.singerName }}</p>
+        <p @click="togglePlayerDetail()">{{ $store.state.player.audio.songName }}</p>
+        <p @click="togglePlayerDetail()">{{ $store.state.player.audio.singerName }}</p>
       </template>
       <template #right-icon>
         <div class="player-control-panel">
@@ -40,7 +50,7 @@
 </template>
 
 <script>
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -48,7 +58,12 @@ export default {
 
   setup() {
     const store = useStore();
+    const audioEle = ref(null);
     let isHidePlayerFooter = ref(false);
+
+    onMounted(() => {
+      store.state.player.audio.audioEle = audioEle.value;
+    });
 
     let togglePlayerFooter = () => {
       isHidePlayerFooter.value = !isHidePlayerFooter.value;
@@ -57,12 +72,13 @@ export default {
     let togglePlayingStatus = () => {
       // 下面这个获取音频元素audioEle的语句不能写在函数外面，
       // 否则执行后面的pause和play方法将报错：【TypeError: can't read property 'pause' of undefined】
-      const audioEle = document.getElementById("audioEle");
+      // 【更新：2021年12月5日22:33:08】突然发现使用Vue中的ref属性更好
+      // const audioEle = document.getElementById("audioEle");
 
       if (store.state.player.status.isPlaying) {
-        audioEle.pause();
+        audioEle.value.pause();
       } else {
-        audioEle.play();
+        audioEle.value.play();
       }
       store.commit("player/togglePlayingStatus");
     };
@@ -71,7 +87,26 @@ export default {
       store.dispatch("player/next");
     };
 
-    return { togglePlayerFooter, togglePlayingStatus, next, isHidePlayerFooter };
+    let togglePlayerDetail = () => {
+      store.commit("player/togglePlayerDetail");
+    };
+
+    let updateCurrentTime = () => {
+      if (store.state.player.status.isSetCurrentTimeManually) {
+        return;
+      }
+      store.commit("player/updateCurrentTime", audioEle.value.currentTime);
+    };
+
+    return {
+      audioEle,
+      togglePlayerFooter,
+      togglePlayingStatus,
+      next,
+      isHidePlayerFooter,
+      togglePlayerDetail,
+      updateCurrentTime,
+    };
   },
 };
 </script>

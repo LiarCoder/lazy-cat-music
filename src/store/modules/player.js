@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-12-01 14:31:11
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-05 00:41:59
+ * @LastEditTime: 2021-12-06 17:18:27
  */
 
 import { getAudio, getLyric } from "@/api/player";
@@ -14,19 +14,21 @@ export default {
   state() {
     return {
       audio: {
+        audioEle: null,
         songUrl: "",
         songName: "",
         songDuration: 0,
         singerName: "",
-        singerImg: "",
+        singerImg: "http://m.kugou.com/v3/static/images/index/logo_kugou.png",
         albumImg: "http://m.kugou.com/v3/static/images/index/logo_kugou.png",
         lyric: "",
       },
       status: {
         currentTime: 0,
+        isSetCurrentTimeManually: false,
+        newCurrentTime: 0,
         isPlaying: false,
         isShowPlayerDetail: false,
-        isShowPlayerFooter: false,
       },
       list: {
         songs: [],
@@ -44,6 +46,8 @@ export default {
       ctx.commit("setSong", { audio, lyric });
     },
 
+    lyricProcessor() {},
+
     next(ctx) {
       let songs = ctx.state.list.songs;
       let index = ctx.state.list.index;
@@ -52,6 +56,15 @@ export default {
         return;
       }
       ctx.dispatch("getSong", { songs, index: index + 1 });
+    },
+    prev(ctx) {
+      let songs = ctx.state.list.songs;
+      let index = ctx.state.list.index;
+      if (index === 0) {
+        alert("已经是第一首歌了。");
+        return;
+      }
+      ctx.dispatch("getSong", { songs, index: index - 1 });
     },
   },
 
@@ -66,8 +79,26 @@ export default {
       state.audio.lyric = lyric;
       state.status.isPlaying = true;
     },
+
     togglePlayingStatus(state) {
       state.status.isPlaying = !state.status.isPlaying;
+    },
+
+    togglePlayerDetail(state) {
+      state.status.isShowPlayerDetail = !state.status.isShowPlayerDetail;
+    },
+
+    updateCurrentTime(state, value) {
+      state.status.currentTime = value;
+    },
+
+    setCurrentTime(state, newCurrentTime) {
+      state.audio.audioEle.currentTime = newCurrentTime;
+      // console.log(newCurrentTime);
+    },
+
+    toggleSetCurrentTimeManually(state) {
+      state.status.isSetCurrentTimeManually = !state.status.isSetCurrentTimeManually;
     },
   },
 };

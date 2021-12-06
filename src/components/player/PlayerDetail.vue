@@ -4,27 +4,30 @@
  * @Author: LiarCoder
  * @Date: 2021-11-27 19:27:59
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-28 16:35:55
+ * @LastEditTime: 2021-12-06 17:41:29
 -->
 <template>
-  <div class="player-detail">
-    <div class="bg-overlay"></div>
+  <div class="player-detail" v-show="$store.state.player.status.isShowPlayerDetail">
+    <div
+      class="bg-overlay"
+      :style="{
+        backgroundImage: `url(${$store.state.player.audio.singerImg.replace('{size}', '400')})`,
+      }"
+    ></div>
     <div class="player-panel">
       <div class="header-top">
-        <span class="go-back">
+        <span class="go-back" @click="togglePlayerDetail()">
           <img src="~@/assets/images/goback_icon.png" alt="返回按钮" />
         </span>
-        演员
+        {{ $store.state.player.audio.songName }}
       </div>
 
       <div class="singer-img">
-        <img
-          src="http://singerimg.kugou.com/uploadpic/softhead/200/20200603/20200603112123228.jpg"
-          alt=""
-        />
+        <img :src="$store.state.player.audio.albumImg.replace('{size}', '400')" alt="歌手图片" />
       </div>
 
       <div class="song-lyrics">
+        <!-- <p v-for=""></p> -->
         <p>混音师：鲍锐</p>
         <p class="current-lyric">母带处理工程师：鲍锐</p>
         <p>简单点</p>
@@ -36,37 +39,87 @@
       </div>
 
       <div class="player-slider">
-        <span>00:00</span>
+        <span>{{ $store.state.player.status.currentTime.toFixed() }}</span>
         <van-slider
-          v-model="value"
+          v-model="$store.state.player.status.currentTime"
+          ref="slider"
+          :max="$store.state.player.audio.songDuration"
           bar-height="0.1785rem"
           active-color="#3195fd"
           inactive-color="#232228"
+          @drag-start="toggleUpdateTime()"
+          @drag-end="toggleUpdateTime()"
+          @change="onSliderChange()"
         >
           <template #button>
             <div class="slider-btn"></div>
           </template>
         </van-slider>
-        <span>04:21</span>
+        <span>{{ $store.state.player.audio.songDuration }}</span>
       </div>
 
       <div class="player-btns">
-        <i class="player-icon-prev"></i>
-        <i class="player-icon-play"></i>
-        <i class="player-icon-next"></i>
+        <i class="player-icon-prev" @click="prev()"></i>
+        <i
+          class="player-icon-play"
+          :class="{ 'player-icon-pause': $store.state.player.status.isPlaying }"
+          @click="togglePlayingStatus()"
+        ></i>
+        <i class="player-icon-next" @click="next()"></i>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, ref, watchEffect, onMounted } from "vue";
+import { useStore } from "vuex";
 export default {
   name: "PlayerDetail",
   setup() {
-    const value = ref(80);
+    const store = useStore();
+    const value = ref(() => store.state.player.status.currentTime);
+    const slider = ref(null);
+
+    let togglePlayerDetail = () => {
+      store.commit("player/togglePlayerDetail");
+    };
+
+    let onSliderChange = (e) => {
+      console.log(slider.value.modelValue);
+      store.commit("player/setCurrentTime", slider.value.modelValue);
+    };
+
+    let toggleUpdateTime = () => {
+      store.commit("player/toggleSetCurrentTimeManually");
+    };
+
+    let togglePlayingStatus = () => {
+      if (store.state.player.status.isPlaying) {
+        store.state.player.audio.audioEle.pause();
+      } else {
+        store.state.player.audio.audioEle.play();
+      }
+      store.commit("player/togglePlayingStatus");
+    };
+
+    let next = () => {
+      store.dispatch("player/next");
+    };
+
+    let prev = () => {
+      store.dispatch("player/prev");
+    };
+
     return {
       value,
+      slider,
+      togglePlayerDetail,
+      onSliderChange,
+      toggleUpdateTime,
+      togglePlayingStatus,
+      prev,
+      next,
     };
   },
 };
@@ -81,9 +134,8 @@ export default {
   height: 100%;
   z-index: 121;
   .bg-overlay {
-    // transform: translateY(62px);
-    transform: translateY(3.2143rem;);
     // margin-top: 62px;
+    transform: translateY(3.2143rem);
     width: 100%;
     height: 100%;
     background-position: center;
@@ -192,12 +244,6 @@ export default {
       text-align: center;
 
       i {
-        margin: 0 0.8929rem;
-        display: inline-block;
-        vertical-align: middle;
-        width: 2.3214rem;
-        height: 2.4rem;
-
         &.player-icon-prev {
           background: url("~@/assets/images/play_prev.png") no-repeat;
           background-size: 100%;
@@ -206,12 +252,27 @@ export default {
           background: url("~@/assets/images/play_next.png") no-repeat;
           background-size: 100%;
         }
+
         &.player-icon-play {
+          background: url("~@/assets/images/play_play.png") no-repeat;
+        }
+
+        &.player-icon-pause {
+          background: url("~@/assets/images/play_pause.png") no-repeat;
+        }
+
+        &.player-icon-play,
+        &.player-icon-pause {
           width: 3.2143rem;
           height: 3.2143rem;
-          background: url("~@/assets/images/play_play.png") no-repeat;
           background-size: 100%;
         }
+
+        margin: 0 0.8929rem;
+        display: inline-block;
+        vertical-align: middle;
+        width: 2.3214rem;
+        height: 2.4rem;
       }
     }
   }
