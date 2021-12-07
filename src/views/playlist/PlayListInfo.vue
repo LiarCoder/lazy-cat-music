@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:29:19
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-07 23:30:55
+ * @LastEditTime: 2021-12-08 00:15:23
 -->
 <template>
   <div class="rank-info-wrapper">
@@ -20,10 +20,11 @@
 
     <div class="rank-info-list">
       <van-cell
-        v-for="song in songs"
+        v-for="(song, index) in songs"
         :key="song.audio_id"
         :title="song.filename"
         class="latest-cell-wrapper"
+        @click="playAudio(songs, index)"
       >
         <template #right-icon>
           <div><i></i></div>
@@ -40,6 +41,7 @@ import { useStore } from "vuex";
 
 import { getPlaylistInfo } from "@/api/playlist";
 import useHeader from "@/hooks/useHeader";
+import usePlayer from "@/hooks/usePlayer";
 
 export default {
   name: "PlayListInfo",
@@ -51,6 +53,7 @@ export default {
     let playlistIntro = ref("");
     let songs = ref([]);
     let routeGuard = useHeader();
+    let playAudio = usePlayer();
 
     getPlaylistInfo(route.params.specialID).then(
       (result) => {
@@ -66,13 +69,7 @@ export default {
 
     routeGuard();
 
-    // store.commit("header/setShowHeaderInfo", true);
-
-    // onBeforeRouteLeave((to, from) => {
-    //   store.commit("header/setShowHeaderInfo", false);
-    // });
-
-    return { playlistCoverURL, playlistIntro, songs };
+    return { playAudio, playlistCoverURL, playlistIntro, songs };
   },
 };
 </script>

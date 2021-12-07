@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:30:35
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-07 23:28:09
+ * @LastEditTime: 2021-12-07 23:59:02
 -->
 <template>
   <div class="rank-info-wrapper">
@@ -19,6 +19,7 @@
         :title="song.filename"
         :data-rank-before="index + 1"
         class="latest-cell-wrapper"
+        @click="playAudio(songs, index)"
       >
         <template #right-icon>
           <div><i></i></div>
@@ -34,6 +35,7 @@ import { ref } from "vue";
 import { getRankListInfo } from "@/api/rank";
 import { useStore } from "vuex";
 import useHeader from "@/hooks/useHeader";
+import usePlayer from "@/hooks/usePlayer";
 
 export default {
   name: "RankInfo",
@@ -44,6 +46,7 @@ export default {
     let rankCoverURL = ref("");
     let lastUpdateTime = new Date().toLocaleDateString().replaceAll("\/", "-");
     let songs = ref([]);
+    let playAudio = usePlayer();
     let routeGuard = useHeader();
 
     getRankListInfo(route.params.rankID).then(
@@ -59,13 +62,7 @@ export default {
 
     routeGuard();
 
-    // store.commit("header/setShowHeaderInfo", true);
-
-    // onBeforeRouteLeave((to, from) => {
-    //   store.commit("header/setShowHeaderInfo", false);
-    // });
-
-    return { rankCoverURL, lastUpdateTime, songs };
+    return { playAudio, rankCoverURL, lastUpdateTime, songs };
   },
 };
 </script>

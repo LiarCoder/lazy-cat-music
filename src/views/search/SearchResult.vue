@@ -4,15 +4,16 @@
  * @Author: LiarCoder
  * @Date: 2021-11-26 22:07:29
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-03 14:03:00
+ * @LastEditTime: 2021-12-08 01:00:08
 -->
 <template>
   <div class="search-result">共有{{ resultAmount }}条结果</div>
   <van-cell
-    v-for="song in searchResults"
+    v-for="(song, index) in searchResults"
     :key="song.audio_id"
     :title="song.filename"
     class="latest-cell-wrapper"
+    @click="playAudio(searchResults, index)"
   >
     <template #right-icon>
       <div><i></i></div>
@@ -23,14 +24,16 @@
 <script>
 import { computed } from "vue";
 import { useStore, mapState } from "vuex";
-// import { getSearchResult } from "@/api/search";
+import usePlayer from "@/hooks/usePlayer";
 
 export default {
   name: "SearchResult",
   setup() {
     const store = useStore();
+    let playAudio = usePlayer();
 
     return {
+      playAudio,
       searchResults: computed(() => store.state.search.searchResults),
       resultAmount: computed(() => store.state.search.resultAmount),
     };
