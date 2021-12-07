@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:29:19
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-08 00:15:23
+ * @LastEditTime: 2021-12-08 01:35:45
 -->
 <template>
   <div class="rank-info-wrapper">
@@ -12,9 +12,9 @@
       <img :src="playlistCoverURL" alt="" />
     </div>
 
-    <div class="playlist-info-intro">
+    <div class="playlist-info-intro" :class="{ 'playlist-info-intro-hide': isHideIntro }">
       <p>{{ playlistIntro }}</p>
-      <div><i></i></div>
+      <div @click="toggleIntro()"><i :class="{ 'playlist-info-intro-hide': isHideIntro }"></i></div>
     </div>
     <hr />
 
@@ -52,8 +52,14 @@ export default {
     let playlistCoverURL = ref("");
     let playlistIntro = ref("");
     let songs = ref([]);
+    let isHideIntro = ref(true);
     let routeGuard = useHeader();
     let playAudio = usePlayer();
+
+    let toggleIntro = () => {
+      console.log("toggleIntro");
+      isHideIntro.value = !isHideIntro.value;
+    };
 
     getPlaylistInfo(route.params.specialID).then(
       (result) => {
@@ -69,7 +75,7 @@ export default {
 
     routeGuard();
 
-    return { playAudio, playlistCoverURL, playlistIntro, songs };
+    return { isHideIntro, toggleIntro, playAudio, playlistCoverURL, playlistIntro, songs };
   },
 };
 </script>
@@ -105,6 +111,10 @@ export default {
     }
   }
   .playlist-info-intro {
+    &.playlist-info-intro-hide {
+      height: 2.25rem;
+    }
+
     width: 100%;
     line-height: 1.8;
     padding: 0.5357rem 2.67857rem 0.5357rem 0.8929rem;
@@ -113,7 +123,6 @@ export default {
     overflow: hidden;
     box-sizing: border-box;
     height: auto;
-    height: 2.25rem;
     div {
       font-size: 1rem;
       width: 2.1429rem;
@@ -125,15 +134,15 @@ export default {
       text-align: center;
       cursor: pointer;
       i {
-        // line-height: 2.1429rem;
-        // text-align: center;
-        cursor: pointer;
-        // font-style: normal;
+        transition: 0.2s;
+        &.playlist-info-intro-hide {
+          transform: rotateZ(-180deg);
+        }
         width: 1.25rem;
         height: 1.25rem;
         display: inline-block;
         vertical-align: text-bottom;
-        background: url("~@/assets/images/close_icon.png") no-repeat;
+        background: url("~@/assets/images/open_icon.png") no-repeat;
         background-size: 100%;
       }
     }
