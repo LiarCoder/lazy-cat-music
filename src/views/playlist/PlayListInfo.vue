@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:29:19
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-01 16:23:14
+ * @LastEditTime: 2021-12-07 23:30:55
 -->
 <template>
   <div class="rank-info-wrapper">
@@ -35,29 +35,43 @@
 
 <script>
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, onBeforeRouteLeave } from "vue-router";
+import { useStore } from "vuex";
 
 import { getPlaylistInfo } from "@/api/playlist";
+import useHeader from "@/hooks/useHeader";
 
 export default {
   name: "PlayListInfo",
   setup() {
     const route = useRoute();
+    const store = useStore();
+
     let playlistCoverURL = ref("");
     let playlistIntro = ref("");
     let songs = ref([]);
+    let routeGuard = useHeader();
 
     getPlaylistInfo(route.params.specialID).then(
       (result) => {
-        // console.log(result);
         playlistCoverURL.value = result.info.list.imgurl.replace("{size}", "400");
         playlistIntro.value = result.info.list.intro;
         songs.value = result.list.list.info;
+        store.commit("header/setHeaderInfo", result.info.list.specialname);
       },
       (error) => {
         console.warn(error);
       }
     );
+
+    routeGuard();
+
+    // store.commit("header/setShowHeaderInfo", true);
+
+    // onBeforeRouteLeave((to, from) => {
+    //   store.commit("header/setShowHeaderInfo", false);
+    // });
+
     return { playlistCoverURL, playlistIntro, songs };
   },
 };

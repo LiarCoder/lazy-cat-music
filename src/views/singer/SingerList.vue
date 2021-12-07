@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:31:59
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-01 18:02:11
+ * @LastEditTime: 2021-12-07 23:49:33
 -->
 <template>
   <van-cell
@@ -24,24 +24,36 @@
 
 <script>
 import { getSingerList } from "@/api/singer";
-import { useRoute } from "vue-router";
+import { useRoute, onBeforeRouteLeave } from "vue-router";
 import { ref } from "vue";
+import useHeader from "@/hooks/useHeader";
+import { useStore } from "vuex";
 
 export default {
   name: "SingerList",
   setup() {
     const route = useRoute();
+    const store = useStore();
     let singers = ref([]);
+    let routeGuard = useHeader();
 
     getSingerList(route.params.classID).then(
       (result) => {
-        // console.log(result);
         singers.value = result.singers.list.info;
+        store.commit("header/setHeaderInfo", result.classname);
       },
       (error) => {
         console.warn(error);
       }
     );
+
+    routeGuard();
+
+    // 进入SingerList组件时，更改顶部信息条的背景色和字体颜色以使得整体协调
+    store.commit("header/setHeaderStyle", {
+      backgroundImage: "linear-gradient(#ffffff, #ffffff)",
+      color: "#000",
+    });
 
     return { singers };
   },

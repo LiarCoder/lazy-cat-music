@@ -4,18 +4,18 @@
  * @Author: LiarCoder
  * @Date: 2021-11-18 20:36:03
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-28 15:41:17
+ * @LastEditTime: 2021-12-05 15:29:45
 -->
 <template>
   <Header />
   <div class="main-body">
     <router-view v-slot="{ Component }">
-      <keep-alive>
+      <keep-alive include="LatestSong,Rank,PlayList,Singer,Storytelling">
         <component :is="Component" />
       </keep-alive>
     </router-view>
   </div>
-  <!-- <PlayerFooter /> -->
+  <PlayerFooter />
   <PlayerDetail />
 </template>
 
@@ -32,7 +32,6 @@ export default {
 };
 </script>
 
-PlayerDetail
 <style lang="less">
 .main-body {
   // 下面这里不能写成 margin-top，否则【新歌】页面的轮播图的顶部就会有一部分被遮住

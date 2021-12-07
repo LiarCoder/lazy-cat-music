@@ -4,13 +4,13 @@
  * @Author: LiarCoder
  * @Date: 2021-11-19 19:50:29
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-28 15:48:54
+ * @LastEditTime: 2021-12-07 16:03:07
 -->
 <template lang="">
   <div class="header-container">
     <HeaderTop />
-    <HeaderNav v-if="true" />
-    <HeaderInfo v-else />
+    <HeaderInfo v-if="$store.state.header.isShowHeaderInfo" />
+    <HeaderNav v-else />
   </div>
 </template>
 <script>

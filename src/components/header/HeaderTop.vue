@@ -4,12 +4,12 @@
  * @Author: LiarCoder
  * @Date: 2021-11-19 19:59:29
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-23 00:15:28
+ * @LastEditTime: 2021-12-01 18:42:48
 -->
 <template lang="">
   <div class="header-top">
     <a href="" class="logo"></a>
-    <a href="" class="btn-search"></a>
+    <a href="#search" class="btn-search"></a>
   </div>
 </template>
 <script>

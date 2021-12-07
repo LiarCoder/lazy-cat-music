@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:31:20
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-01 18:30:12
+ * @LastEditTime: 2021-12-07 23:30:07
 -->
 <template>
   <div class="rank-info-wrapper">
@@ -33,28 +33,40 @@
 
 <script>
 import { getSingerInfo } from "@/api/singer";
-import { useRoute } from "vue-router";
+import { useRoute, onBeforeRouteLeave } from "vue-router";
 import { ref } from "vue";
+
+import useHeader from "@/hooks/useHeader";
+import { useStore } from "vuex";
 
 export default {
   name: "SingerInfo",
   setup() {
     const route = useRoute();
+    const store = useStore();
     let singerCoverURL = ref("");
     let singerIntro = ref("");
     let songs = ref([]);
+    let routeGuard = useHeader();
 
     getSingerInfo(route.params.singerID).then(
       (result) => {
-        // console.log(result);
         singerCoverURL.value = result.info.imgurl.replace("{size}", "400");
         singerIntro.value = result.info.intro;
         songs.value = result.songs.list;
+        store.commit("header/setHeaderInfo", result.info.singername);
       },
       (error) => {
         console.warn(error);
       }
     );
+
+    routeGuard();
+    // store.commit("header/setShowHeaderInfo", true);
+
+    // onBeforeRouteLeave((to, from) => {
+    //   store.commit("header/setShowHeaderInfo", false);
+    // });
 
     return { singerCoverURL, singerIntro, songs };
   },
@@ -131,10 +143,12 @@ export default {
   padding: 0 0 0 1.0714rem;
   height: 4.0714rem;
   align-items: center;
-  font-size: 1rem;
+  // width: 76%;
 
   .van-cell__title {
     display: block;
+    padding-right: 24%;
+    font-size: 0.875rem;
 
     & + div {
       height: 100%;

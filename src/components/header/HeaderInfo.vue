@@ -4,19 +4,32 @@
  * @Author: LiarCoder
  * @Date: 2021-11-19 20:11:33
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-28 15:45:02
+ * @LastEditTime: 2021-12-07 23:32:34
 -->
 <template lang="">
-  <div class="header-info-container">
-    <span class="go-back">
+  <div class="header-info-container" :style="$store.state.header.headerStyle">
+    <span class="go-back" @click="back()">
       <img src="~@/assets/images/goback_icon_gray.png" alt="返回按钮" />
     </span>
-    热门歌手
+    {{ $store.state.header.headerInfo }}
   </div>
 </template>
 <script>
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 export default {
   name: "HeaderInfo",
+
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+
+    let back = () => {
+      router.back();
+    };
+
+    return { back };
+  },
 };
 </script>
 <style lang="less">
@@ -35,6 +48,7 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  padding: 0 2.1429rem;
 
   .go-back {
     position: absolute;

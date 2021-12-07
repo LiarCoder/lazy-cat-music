@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:30:35
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-01 13:47:34
+ * @LastEditTime: 2021-12-07 23:28:09
 -->
 <template>
   <div class="rank-info-wrapper">
@@ -29,28 +29,42 @@
 </template>
 
 <script>
-import { useRoute } from "vue-router";
+import { useRoute, onBeforeRouteLeave } from "vue-router";
 import { ref } from "vue";
 import { getRankListInfo } from "@/api/rank";
+import { useStore } from "vuex";
+import useHeader from "@/hooks/useHeader";
 
 export default {
   name: "RankInfo",
   setup() {
+    const route = useRoute();
+    const store = useStore();
+
     let rankCoverURL = ref("");
     let lastUpdateTime = new Date().toLocaleDateString().replaceAll("\/", "-");
     let songs = ref([]);
-    const route = useRoute();
+    let routeGuard = useHeader();
+
     getRankListInfo(route.params.rankID).then(
       (result) => {
-        // console.log(result);
-        // rankCoverURL.value = result.info.imgurl.replace("{size}", "400");
-        rankCoverURL.value = result.info.banner7url.replace("{size}", "400");
+        rankCoverURL.value = result.info.imgurl.replace("{size}", "400");
         songs.value = result.songs.list;
+        store.commit("header/setHeaderInfo", result.info.rankname);
       },
       (error) => {
         console.warn(error);
       }
     );
+
+    routeGuard();
+
+    // store.commit("header/setShowHeaderInfo", true);
+
+    // onBeforeRouteLeave((to, from) => {
+    //   store.commit("header/setShowHeaderInfo", false);
+    // });
+
     return { rankCoverURL, lastUpdateTime, songs };
   },
 };
