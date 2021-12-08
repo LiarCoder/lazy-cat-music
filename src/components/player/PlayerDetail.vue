@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-27 19:27:59
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-07 00:16:17
+ * @LastEditTime: 2021-12-08 14:39:26
 -->
 <template>
   <div class="player-detail" v-show="$store.state.player.status.isShowPlayerDetail">
@@ -31,7 +31,7 @@
           <p
             v-for="lrc in $store.state.player.audio.lyric"
             :class="{
-              'current-lyric': $store.state.player.status.currentTime >= lrc.timestamp,
+              'current-lyric': $store.state.player.status.currentTime >= lrc.timestamp - 1,
             }"
             :key="lrc.timestamp"
           >
@@ -41,7 +41,7 @@
       </div>
 
       <div class="player-slider">
-        <span>{{ $store.state.player.status.currentTime.toFixed() }}</span>
+        <span>{{ toMMSS(Number($store.state.player.status.currentTime.toFixed())) }}</span>
         <van-slider
           v-model="$store.state.player.status.currentTime"
           ref="slider"
@@ -57,7 +57,7 @@
             <div class="slider-btn"></div>
           </template>
         </van-slider>
-        <span>{{ $store.state.player.audio.songDuration }}</span>
+        <span>{{ toMMSS(Number($store.state.player.audio.songDuration)) }}</span>
       </div>
 
       <div class="player-btns">
@@ -76,6 +76,8 @@
 <script>
 import { computed, ref, watchEffect, onMounted } from "vue";
 import { useStore } from "vuex";
+import { toMMSS } from "@/utils/time";
+
 export default {
   name: "PlayerDetail",
   setup() {
@@ -128,6 +130,7 @@ export default {
       prev,
       next,
       lyricOffset,
+      toMMSS,
     };
   },
 };
@@ -214,9 +217,8 @@ export default {
       }
 
       p {
-        padding: 0;
+        padding: 0 12%;
         margin: 0;
-        width: 100%;
         height: 1.7857rem;
         line-height: 1.7857rem;
         vertical-align: top;

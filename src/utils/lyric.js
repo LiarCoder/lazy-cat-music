@@ -4,10 +4,10 @@
  * @Author: LiarCoder
  * @Date: 2021-12-05 16:54:21
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-07 00:24:01
+ * @LastEditTime: 2021-12-08 13:05:47
  */
 
-const { toSeconds } = require("./time.js");
+import { toSeconds } from "./time";
 
 /**
  * @description: 处理原歌词
@@ -19,14 +19,10 @@ const { toSeconds } = require("./time.js");
 
 export default (rawLyric) => {
   let validLyricRegex = /\[(\d{1,}):(\d{2}\.\d{2,3})\](.*)/g;
-  let timestamp = "";
-  let lyricText = "";
   return rawLyric.match(validLyricRegex).map((cur) => {
-    timestamp = toSeconds(cur.slice(1, 9));
-    lyricText = cur.slice(10);
     return {
-      timestamp,
-      lyricText,
+      timestamp: toSeconds(cur.slice(1, 9)),
+      lyricText: cur.slice(10),
     };
   });
 };
