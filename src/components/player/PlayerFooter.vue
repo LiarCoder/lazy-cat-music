@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-27 15:33:47
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-08 17:51:15
+ * @LastEditTime: 2021-12-08 22:07:13
 -->
 <template>
   <div class="player-footer" :class="{ 'player-footer-toggle': isHidePlayerFooter }">
@@ -41,7 +41,7 @@
             :class="{ 'player-icon-pause': $store.state.player.status.isPlaying }"
             @click="togglePlayingStatus()"
           ></i>
-          <i class="player-icon-next" @click="next()"></i>
+          <i class="player-icon-next" @click="switchSong('next')"></i>
           <i class="player-icon-download"></i>
         </div>
       </template>
@@ -83,8 +83,8 @@ export default {
       store.commit("player/toggleStatus", "isPlaying");
     };
 
-    let next = () => {
-      store.dispatch("player/next");
+    let switchSong = (actionType) => {
+      store.dispatch("player/switchSong", actionType);
     };
 
     let togglePlayerDetail = () => {
@@ -100,12 +100,12 @@ export default {
 
     return {
       audioEle,
+      isHidePlayerFooter,
       togglePlayerFooter,
       togglePlayingStatus,
-      next,
-      isHidePlayerFooter,
       togglePlayerDetail,
       updateCurrentTime,
+      switchSong,
     };
   },
 };

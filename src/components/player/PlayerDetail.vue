@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-27 19:27:59
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-08 17:50:47
+ * @LastEditTime: 2021-12-08 21:56:50
 -->
 <template>
   <div class="player-detail" v-show="$store.state.player.status.isShowPlayerDetail">
@@ -61,13 +61,13 @@
       </div>
 
       <div class="player-btns">
-        <i class="player-icon-prev" @click="prev()"></i>
+        <i class="player-icon-prev" @click="switchSong('prev')"></i>
         <i
           class="player-icon-play"
           :class="{ 'player-icon-pause': $store.state.player.status.isPlaying }"
           @click="togglePlayingStatus()"
         ></i>
-        <i class="player-icon-next" @click="next()"></i>
+        <i class="player-icon-next" @click="switchSong('next')"></i>
       </div>
     </div>
   </div>
@@ -111,12 +111,8 @@ export default {
       store.commit("player/toggleStatus", "isPlaying");
     };
 
-    let next = () => {
-      store.dispatch("player/next");
-    };
-
-    let prev = () => {
-      store.dispatch("player/prev");
+    let switchSong = (actionType) => {
+      store.dispatch("player/switchSong", actionType);
     };
 
     return {
@@ -126,10 +122,9 @@ export default {
       onSliderChange,
       toggleUpdateTime,
       togglePlayingStatus,
-      prev,
-      next,
       lyricOffset,
       toMMSS,
+      switchSong,
     };
   },
 };

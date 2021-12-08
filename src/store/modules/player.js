@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-12-01 14:31:11
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-08 17:56:28
+ * @LastEditTime: 2021-12-08 22:21:30
  */
 
 import { getAudio, getLyric } from "@/api/player";
@@ -49,23 +49,24 @@ export default {
       ctx.commit("setSong", { audio, lyric });
     },
 
-    next(ctx) {
-      let songs = ctx.state.list.songs;
-      let index = ctx.state.list.index;
-      if (index === songs.length - 1) {
-        alert("已经是最后一首歌了。");
-        return;
+    switchSong(ctx, actionType) {
+      try {
+        if (!["next", "prev"].includes(actionType)) {
+          throw `[Action Error]: '${actionType}' is not a expected action type, it must be 'next' or 'prev'`;
+        }
+        let songs = ctx.state.list.songs;
+        let index = ctx.state.list.index;
+        let limit = actionType === "next" ? songs.length - 1 : 0;
+        let limitMessage = actionType === "next" ? "已经是最后一首歌了" : "已经是第一首歌了";
+        let newIndex = actionType === "next" ? index + 1 : index - 1;
+        if (index === limit) {
+          alert(limitMessage);
+          return;
+        }
+        ctx.dispatch("getSong", { songs, index: newIndex });
+      } catch (error) {
+        console.error(error);
       }
-      ctx.dispatch("getSong", { songs, index: index + 1 });
-    },
-    prev(ctx) {
-      let songs = ctx.state.list.songs;
-      let index = ctx.state.list.index;
-      if (index === 0) {
-        alert("已经是第一首歌了。");
-        return;
-      }
-      ctx.dispatch("getSong", { songs, index: index - 1 });
     },
   },
 
