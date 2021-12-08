@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:31:20
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-08 01:44:14
+ * @LastEditTime: 2021-12-09 00:35:41
 -->
 <template>
   <div class="rank-info-wrapper">
@@ -54,7 +54,7 @@ export default {
     let songs = ref([]);
     let isHideIntro = ref(true);
     let routeGuard = useHeader();
-    let playAudio = usePlayer();
+    let { playAudio } = usePlayer();
 
     let toggleIntro = () => {
       console.log("toggleIntro");

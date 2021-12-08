@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:20:17
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-04 21:39:17
+ * @LastEditTime: 2021-12-09 00:37:02
 -->
 <template>
   <!-- <van-swipe :autoplay="3000" lazy-render> -->
@@ -25,7 +25,7 @@
   >
     <!-- 使用 right-icon 插槽来自定义右侧图标 -->
     <template #right-icon>
-      <div><i></i></div>
+      <div @click.stop="downloadAudio()"><i></i></div>
     </template>
   </van-cell>
 </template>
@@ -40,7 +40,7 @@ export default {
   setup() {
     let banners = ref([]);
     let songs = ref([]);
-    let playAudio = usePlayer();
+    let { playAudio, downloadAudio } = usePlayer();
 
     getLatestSongs().then(
       (result) => {
@@ -53,7 +53,7 @@ export default {
         console.log(error);
       }
     );
-    return { playAudio, banners, songs };
+    return { playAudio, downloadAudio, banners, songs };
   },
 };
 </script>

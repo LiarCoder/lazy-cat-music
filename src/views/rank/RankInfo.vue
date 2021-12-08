@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:30:35
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-07 23:59:02
+ * @LastEditTime: 2021-12-09 00:37:15
 -->
 <template>
   <div class="rank-info-wrapper">
@@ -22,7 +22,7 @@
         @click="playAudio(songs, index)"
       >
         <template #right-icon>
-          <div><i></i></div>
+          <div @click.stop="downloadAudio()"><i></i></div>
         </template>
       </van-cell>
     </div>
@@ -46,7 +46,7 @@ export default {
     let rankCoverURL = ref("");
     let lastUpdateTime = new Date().toLocaleDateString().replaceAll("\/", "-");
     let songs = ref([]);
-    let playAudio = usePlayer();
+    let { playAudio, downloadAudio } = usePlayer();
     let routeGuard = useHeader();
 
     getRankListInfo(route.params.rankID).then(
@@ -62,7 +62,7 @@ export default {
 
     routeGuard();
 
-    return { playAudio, rankCoverURL, lastUpdateTime, songs };
+    return { playAudio, downloadAudio, rankCoverURL, lastUpdateTime, songs };
   },
 };
 </script>

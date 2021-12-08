@@ -4,11 +4,12 @@
  * @Author: LiarCoder
  * @Date: 2021-12-01 14:31:11
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-08 23:36:40
+ * @LastEditTime: 2021-12-09 00:09:37
  */
 
 import { getAudio, getLyric } from "@/api/player";
 import processLyric from "@/utils/lyric";
+import { Dialog } from "vant";
 
 const defalutImg = "http://m.kugou.com/v3/static/images/index/logo_kugou.png";
 
@@ -71,6 +72,14 @@ export default {
 
   mutations: {
     setSong(state, { audio, lyric }) {
+      if (!audio.url) {
+        Dialog({
+          message: "唱片公司要求这首歌付费后才能试听，请在手机酷狗里购买",
+          width: "88%",
+          confirmButtonColor: "#229ef8",
+        });
+        return;
+      }
       state.audio.songUrl = audio.url;
       state.audio.songName = audio.songName;
       state.audio.songDuration = audio.timeLength;

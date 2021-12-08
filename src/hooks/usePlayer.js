@@ -4,10 +4,11 @@
  * @Author: LiarCoder
  * @Date: 2021-12-03 16:02:23
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-04 21:39:15
+ * @LastEditTime: 2021-12-09 00:29:54
  */
 
 import { useStore } from "vuex";
+import { Dialog } from "vant";
 
 export default () => {
   // 下面这个store千万不要写到playAudio函数里面，否则控制台会报错【TypeError: can't read property 'dispatch' of undefined】
@@ -19,5 +20,13 @@ export default () => {
     store.dispatch("player/getSong", { songs, index });
   };
 
-  return playAudio;
+  let downloadAudio = () => {
+    Dialog({
+      message: "下载需要手机酷狗客户端支持。",
+      width: "88%",
+      confirmButtonColor: "#229ef8",
+    });
+  };
+
+  return { playAudio, downloadAudio };
 };

@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-26 22:07:29
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-08 01:00:08
+ * @LastEditTime: 2021-12-09 00:37:07
 -->
 <template>
   <div class="search-result">共有{{ resultAmount }}条结果</div>
@@ -16,7 +16,7 @@
     @click="playAudio(searchResults, index)"
   >
     <template #right-icon>
-      <div><i></i></div>
+      <div @click.stop="downloadAudio()"><i></i></div>
     </template>
   </van-cell>
 </template>
@@ -30,10 +30,11 @@ export default {
   name: "SearchResult",
   setup() {
     const store = useStore();
-    let playAudio = usePlayer();
+    let { playAudio, downloadAudio } = usePlayer();
 
     return {
       playAudio,
+      downloadAudio,
       searchResults: computed(() => store.state.search.searchResults),
       resultAmount: computed(() => store.state.search.resultAmount),
     };

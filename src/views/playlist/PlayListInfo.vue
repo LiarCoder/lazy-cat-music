@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:29:19
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-08 01:35:45
+ * @LastEditTime: 2021-12-09 00:36:35
 -->
 <template>
   <div class="rank-info-wrapper">
@@ -27,7 +27,7 @@
         @click="playAudio(songs, index)"
       >
         <template #right-icon>
-          <div><i></i></div>
+          <div @click.stop="downloadAudio()"><i></i></div>
         </template>
       </van-cell>
     </div>
@@ -54,7 +54,7 @@ export default {
     let songs = ref([]);
     let isHideIntro = ref(true);
     let routeGuard = useHeader();
-    let playAudio = usePlayer();
+    let { playAudio, downloadAudio } = usePlayer();
 
     let toggleIntro = () => {
       console.log("toggleIntro");
@@ -75,7 +75,15 @@ export default {
 
     routeGuard();
 
-    return { isHideIntro, toggleIntro, playAudio, playlistCoverURL, playlistIntro, songs };
+    return {
+      isHideIntro,
+      toggleIntro,
+      playAudio,
+      downloadAudio,
+      playlistCoverURL,
+      playlistIntro,
+      songs,
+    };
   },
 };
 </script>
