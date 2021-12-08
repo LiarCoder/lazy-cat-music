@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-12-01 14:31:11
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-08 22:21:30
+ * @LastEditTime: 2021-12-08 23:36:40
  */
 
 import { getAudio, getLyric } from "@/api/player";
@@ -44,9 +44,8 @@ export default {
     async getSong(ctx, { songs, index }) {
       const audio = await getAudio(songs[index].hash);
       const lyric = await getLyric(songs[index].duration * 1000, songs[index].hash);
-      ctx.state.list.songs = songs;
-      ctx.state.list.index = index;
       ctx.commit("setSong", { audio, lyric });
+      ctx.commit("setList", { songs, index });
     },
 
     switchSong(ctx, actionType) {
@@ -80,6 +79,11 @@ export default {
       state.audio.albumImg = audio.album_img || defalutImg;
       state.audio.lyric = processLyric(lyric);
       state.status.isPlaying = true;
+    },
+
+    setList(state, { songs, index }) {
+      state.list.songs = songs;
+      state.list.index = index;
     },
 
     updateCurrentTime(state, value) {
