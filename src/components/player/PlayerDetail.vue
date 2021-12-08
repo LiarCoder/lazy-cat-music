@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-27 19:27:59
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-08 16:40:38
+ * @LastEditTime: 2021-12-08 17:50:47
 -->
 <template>
   <div class="player-detail" v-show="$store.state.player.status.isShowPlayerDetail">
@@ -90,17 +90,16 @@ export default {
       return store.state.player.status.currentTime - store.state.player.status.currentTime + offset;
     });
 
-    let togglePlayerDetail = () => {
-      store.commit("player/togglePlayerDetail");
-    };
-
-    let onSliderChange = (e) => {
-      console.log(slider.value.modelValue);
+    let onSliderChange = () => {
       store.commit("player/setCurrentTime", slider.value.modelValue);
     };
 
+    let togglePlayerDetail = () => {
+      store.commit("player/toggleStatus", "isShowPlayerDetail");
+    };
+
     let toggleUpdateTime = () => {
-      store.commit("player/toggleSetCurrentTimeManually");
+      store.commit("player/toggleStatus", "isSettingCurrentTimeManually");
     };
 
     let togglePlayingStatus = () => {
@@ -109,7 +108,7 @@ export default {
       } else {
         store.state.player.audio.audioEle.play();
       }
-      store.commit("player/togglePlayingStatus");
+      store.commit("player/toggleStatus", "isPlaying");
     };
 
     let next = () => {

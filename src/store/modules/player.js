@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-12-01 14:31:11
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-07 00:26:17
+ * @LastEditTime: 2021-12-08 17:56:28
  */
 
 import { getAudio, getLyric } from "@/api/player";
@@ -28,7 +28,7 @@ export default {
       },
       status: {
         currentTime: 0,
-        isSetCurrentTimeManually: false,
+        isSettingCurrentTimeManually: false,
         newCurrentTime: 0,
         isPlaying: false,
         isShowPlayerDetail: false,
@@ -81,14 +81,6 @@ export default {
       state.status.isPlaying = true;
     },
 
-    togglePlayingStatus(state) {
-      state.status.isPlaying = !state.status.isPlaying;
-    },
-
-    togglePlayerDetail(state) {
-      state.status.isShowPlayerDetail = !state.status.isShowPlayerDetail;
-    },
-
     updateCurrentTime(state, value) {
       state.status.currentTime = value;
     },
@@ -97,8 +89,8 @@ export default {
       state.audio.audioEle.currentTime = newCurrentTime;
     },
 
-    toggleSetCurrentTimeManually(state) {
-      state.status.isSetCurrentTimeManually = !state.status.isSetCurrentTimeManually;
+    toggleStatus(state, status) {
+      state.status[status] = !state.status[status];
     },
   },
 };

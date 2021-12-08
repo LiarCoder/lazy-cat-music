@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-27 15:33:47
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-06 17:33:59
+ * @LastEditTime: 2021-12-08 17:51:15
 -->
 <template>
   <div class="player-footer" :class="{ 'player-footer-toggle': isHidePlayerFooter }">
@@ -80,7 +80,7 @@ export default {
       } else {
         audioEle.value.play();
       }
-      store.commit("player/togglePlayingStatus");
+      store.commit("player/toggleStatus", "isPlaying");
     };
 
     let next = () => {
@@ -88,11 +88,11 @@ export default {
     };
 
     let togglePlayerDetail = () => {
-      store.commit("player/togglePlayerDetail");
+      store.commit("player/toggleStatus", "isShowPlayerDetail");
     };
 
     let updateCurrentTime = () => {
-      if (store.state.player.status.isSetCurrentTimeManually) {
+      if (store.state.player.status.isSettingCurrentTimeManually) {
         return;
       }
       store.commit("player/updateCurrentTime", audioEle.value.currentTime);
