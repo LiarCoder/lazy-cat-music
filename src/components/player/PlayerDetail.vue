@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-27 19:27:59
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-08 14:39:26
+ * @LastEditTime: 2021-12-08 16:40:38
 -->
 <template>
   <div class="player-detail" v-show="$store.state.player.status.isShowPlayerDetail">
@@ -31,7 +31,7 @@
           <p
             v-for="lrc in $store.state.player.audio.lyric"
             :class="{
-              'current-lyric': $store.state.player.status.currentTime >= lrc.timestamp - 1,
+              'current-lyric': $store.state.player.status.currentTime >= lrc.timestamp - 0.5,
             }"
             :key="lrc.timestamp"
           >
