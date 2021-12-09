@@ -34,7 +34,7 @@ npm run lint
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-## 更新日志
+## 开发日志
 
 【2021 年 11 月 18 日 20:36:08】利用 Vue CLI 创建项目骨架。
 
@@ -99,3 +99,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 【2021 年 12 月 08 日 23:41:48】将 Vuex 中的 actions 中的对 state 数据的操作移到 mutations 中。
 
 【===========================手动恢复内容==============================】
+
+【2021 年 12 月 09 日 01:52:07】增加提升用户体验的付费提示和下载提示，并增加相应的 hook 函数。
+
+【2021 年 12 月 10 日 00:29:29】封装 Vuex 中的辅助函数。
