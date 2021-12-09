@@ -4,14 +4,14 @@
  * @Author: LiarCoder
  * @Date: 2021-11-27 19:27:59
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-08 21:56:50
+ * @LastEditTime: 2021-12-10 00:23:32
 -->
 <template>
-  <div class="player-detail" v-show="$store.state.player.status.isShowPlayerDetail">
+  <div class="player-detail" v-show="status.isShowPlayerDetail">
     <div
       class="bg-overlay"
       :style="{
-        backgroundImage: `url(${$store.state.player.audio.singerImg.replace('{size}', '400')})`,
+        backgroundImage: `url(${audio.singerImg.replace('{size}', '400')})`,
       }"
     ></div>
     <div class="player-panel">
@@ -19,19 +19,19 @@
         <span class="go-back" @click="togglePlayerDetail()">
           <img src="~@/assets/images/goback_icon.png" alt="返回按钮" />
         </span>
-        {{ $store.state.player.audio.songName }}
+        {{ audio.songName }}
       </div>
 
       <div class="singer-img">
-        <img :src="$store.state.player.audio.albumImg.replace('{size}', '400')" alt="专辑封面" />
+        <img :src="audio.albumImg.replace('{size}', '400')" alt="专辑封面" />
       </div>
 
       <div class="song-lyrics">
         <div class="lyric-content" :style="{ marginTop: `${-lyricOffset}rem` }">
           <p
-            v-for="lrc in $store.state.player.audio.lyric"
+            v-for="lrc in audio.lyric"
             :class="{
-              'current-lyric': $store.state.player.status.currentTime >= lrc.timestamp - 0.5,
+              'current-lyric': status.currentTime >= lrc.timestamp - 0.5,
             }"
             :key="lrc.timestamp"
           >
@@ -41,11 +41,11 @@
       </div>
 
       <div class="player-slider">
-        <span>{{ toMMSS(Number($store.state.player.status.currentTime.toFixed())) }}</span>
+        <span>{{ toMMSS(Number(status.currentTime.toFixed())) }}</span>
         <van-slider
-          v-model="$store.state.player.status.currentTime"
+          v-model="status.currentTime"
           ref="slider"
-          :max="$store.state.player.audio.songDuration"
+          :max="audio.songDuration"
           bar-height="0.1785rem"
           active-color="#3195fd"
           inactive-color="#232228"
@@ -57,14 +57,14 @@
             <div class="slider-btn"></div>
           </template>
         </van-slider>
-        <span>{{ toMMSS(Number($store.state.player.audio.songDuration)) }}</span>
+        <span>{{ toMMSS(Number(audio.songDuration)) }}</span>
       </div>
 
       <div class="player-btns">
         <i class="player-icon-prev" @click="switchSong('prev')"></i>
         <i
           class="player-icon-play"
-          :class="{ 'player-icon-pause': $store.state.player.status.isPlaying }"
+          :class="{ 'player-icon-pause': status.isPlaying }"
           @click="togglePlayingStatus()"
         ></i>
         <i class="player-icon-next" @click="switchSong('next')"></i>
@@ -77,17 +77,20 @@
 import { computed, ref, watchEffect, onMounted } from "vue";
 import { useStore } from "vuex";
 import { toMMSS } from "@/utils/time";
+import useMapper from "@/hooks/useMapper";
 
 export default {
   name: "PlayerDetail",
   setup() {
     const store = useStore();
-    const value = ref(() => store.state.player.status.currentTime);
     const slider = ref(null);
+
+    let { useState } = useMapper();
+    let { audio, status } = useState("player", ["audio", "status"]);
 
     let lyricOffset = computed(() => {
       let offset = (document.querySelectorAll(".current-lyric").length - 1) * 1.7857;
-      return store.state.player.status.currentTime - store.state.player.status.currentTime + offset;
+      return status.value.currentTime - status.value.currentTime + offset;
     });
 
     let onSliderChange = () => {
@@ -103,10 +106,10 @@ export default {
     };
 
     let togglePlayingStatus = () => {
-      if (store.state.player.status.isPlaying) {
-        store.state.player.audio.audioEle.pause();
+      if (status.value.isPlaying) {
+        audio.value.audioEle.pause();
       } else {
-        store.state.player.audio.audioEle.play();
+        audio.value.audioEle.play();
       }
       store.commit("player/toggleStatus", "isPlaying");
     };
@@ -116,7 +119,6 @@ export default {
     };
 
     return {
-      value,
       slider,
       togglePlayerDetail,
       onSliderChange,
@@ -125,6 +127,8 @@ export default {
       lyricOffset,
       toMMSS,
       switchSong,
+      audio,
+      status,
     };
   },
 };

@@ -4,12 +4,12 @@
  * @Author: LiarCoder
  * @Date: 2021-11-27 15:33:47
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-08 22:07:13
+ * @LastEditTime: 2021-12-09 22:55:55
 -->
 <template>
   <div class="player-footer" :class="{ 'player-footer-toggle': isHidePlayerFooter }">
     <audio
-      :src="$store.state.player.audio.songUrl"
+      :src="audio.songUrl"
       ref="audioEle"
       autoplay
       @timeupdate="updateCurrentTime()"
@@ -25,20 +25,20 @@
     <van-cell>
       <template #title>
         <img
-          :src="$store.state.player.audio.albumImg.replace('{size}', '400')"
+          :src="audio.albumImg.replace('{size}', '400')"
           alt="专辑封面"
           @click="togglePlayerDetail()"
         />
       </template>
       <template #value>
-        <p @click="togglePlayerDetail()">{{ $store.state.player.audio.songName }}</p>
-        <p @click="togglePlayerDetail()">{{ $store.state.player.audio.singerName }}</p>
+        <p @click="togglePlayerDetail()">{{ audio.songName }}</p>
+        <p @click="togglePlayerDetail()">{{ audio.singerName }}</p>
       </template>
       <template #right-icon>
         <div class="player-control-panel">
           <i
             class="player-icon-play"
-            :class="{ 'player-icon-pause': $store.state.player.status.isPlaying }"
+            :class="{ 'player-icon-pause': status.isPlaying }"
             @click="togglePlayingStatus()"
           ></i>
           <i class="player-icon-next" @click="switchSong('next')"></i>
@@ -50,8 +50,9 @@
 </template>
 
 <script>
-import { reactive, ref, onMounted } from "vue";
+import { reactive, ref, onMounted, toRefs } from "vue";
 import { useStore } from "vuex";
+import useMapper from "@/hooks/useMapper";
 
 export default {
   name: "PlayerFooter",
@@ -61,8 +62,12 @@ export default {
     const audioEle = ref(null);
     let isHidePlayerFooter = ref(false);
 
+    let { useState } = useMapper();
+    // 注意下面解构出来的 audio 和 status 都是响应式的数据，所以使用的时候需要 xxx.value 的形式
+    let { audio, status } = useState("player", ["audio", "status"]);
+
     onMounted(() => {
-      store.state.player.audio.audioEle = audioEle.value;
+      audio.value.audioEle = audioEle.value;
     });
 
     let togglePlayerFooter = () => {
@@ -75,7 +80,7 @@ export default {
       // 【更新：2021年12月5日22:33:08】突然发现使用Vue中的ref属性更好
       // const audioEle = document.getElementById("audioEle");
 
-      if (store.state.player.status.isPlaying) {
+      if (status.value.isPlaying) {
         audioEle.value.pause();
       } else {
         audioEle.value.play();
@@ -92,7 +97,7 @@ export default {
     };
 
     let updateCurrentTime = () => {
-      if (store.state.player.status.isSettingCurrentTimeManually) {
+      if (status.value.isSettingCurrentTimeManually) {
         return;
       }
       store.commit("player/updateCurrentTime", audioEle.value.currentTime);
@@ -106,6 +111,8 @@ export default {
       togglePlayerDetail,
       updateCurrentTime,
       switchSong,
+      audio,
+      status,
     };
   },
 };

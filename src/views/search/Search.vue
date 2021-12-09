@@ -4,15 +4,10 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:23:25
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-03 15:11:35
+ * @LastEditTime: 2021-12-10 00:06:33
 -->
 <template>
-  <van-search
-    v-model="$store.state.search.keyword"
-    show-action
-    placeholder="歌手/歌名/拼音"
-    @search="onSearch"
-  >
+  <van-search v-model="keyword.text" show-action placeholder="歌手/歌名/拼音" @search="onSearch">
     <template #action>
       <div @click="onSearch">搜索</div>
     </template>
@@ -32,6 +27,7 @@
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import useMapper from "@/hooks/useMapper";
 
 export default {
   name: "Search",
@@ -39,10 +35,11 @@ export default {
     const router = useRouter();
     const store = useStore();
 
+    let { useState } = useMapper();
+    let { keyword } = useState("search", ["keyword"]);
+
     let onSearch = () => {
-      // console.log(keyword.value);
-      if (!store.state.search.keyword) {
-        console.log(router.currentRoute.value.path);
+      if (!keyword.value.text) {
         router.push({ path: "/search/recent-hot" });
         return;
       }
@@ -51,7 +48,7 @@ export default {
       }
       store.dispatch("search/search");
     };
-    return { onSearch };
+    return { onSearch, keyword };
   },
 };
 </script>

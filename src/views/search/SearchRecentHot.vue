@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-26 22:07:04
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-03 15:18:51
+ * @LastEditTime: 2021-12-09 23:20:45
 -->
 <template>
   <div class="search-recent-hot">最近热门</div>
@@ -21,7 +21,9 @@
 import { ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+
 import { getRecentHotList } from "@/api/search";
+import useMapper from "@/hooks/useMapper";
 
 export default {
   name: "SearchRecentHot",
@@ -30,14 +32,16 @@ export default {
     const router = useRouter();
     let recentHotList = ref([]);
 
-    let searchHot = (keyword) => {
-      store.state.search.keyword = keyword;
+    let { useState } = useMapper();
+    let { keyword } = useState("search", ["keyword"]);
+
+    let searchHot = (kw) => {
+      keyword.value = kw;
       router.push({ path: "/search/result" });
       store.dispatch("search/search");
     };
     getRecentHotList().then(
       (result) => {
-        // console.log(result);
         recentHotList.value = result.data.info;
       },
       (error) => {

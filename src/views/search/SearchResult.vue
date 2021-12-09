@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-26 22:07:29
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-09 00:37:07
+ * @LastEditTime: 2021-12-09 23:23:30
 -->
 <template>
   <div class="search-result">共有{{ resultAmount }}条结果</div>
@@ -24,7 +24,9 @@
 <script>
 import { computed } from "vue";
 import { useStore, mapState } from "vuex";
+
 import usePlayer from "@/hooks/usePlayer";
+import useMapper from "@/hooks/useMapper";
 
 export default {
   name: "SearchResult",
@@ -32,11 +34,12 @@ export default {
     const store = useStore();
     let { playAudio, downloadAudio } = usePlayer();
 
+    let { useState } = useMapper();
+
     return {
       playAudio,
       downloadAudio,
-      searchResults: computed(() => store.state.search.searchResults),
-      resultAmount: computed(() => store.state.search.resultAmount),
+      ...useState("search", ["searchResults", "resultAmount"]),
     };
   },
 };
