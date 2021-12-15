@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-26 22:07:04
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-09 23:20:45
+ * @LastEditTime: 2021-12-16 00:13:09
 -->
 <template>
   <div class="search-recent-hot">最近热门</div>
@@ -36,7 +36,7 @@ export default {
     let { keyword } = useState("search", ["keyword"]);
 
     let searchHot = (kw) => {
-      keyword.value = kw;
+      keyword.value.text = kw;
       router.push({ path: "/search/result" });
       store.dispatch("search/search");
     };
