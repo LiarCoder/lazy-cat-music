@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:31:20
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-09 00:35:41
+ * @LastEditTime: 2021-12-15 18:01:54
 -->
 <template>
   <div class="rank-info-wrapper">
@@ -20,32 +20,26 @@
     </div>
     <hr />
 
-    <div class="rank-info-list">
-      <van-cell
-        v-for="(song, index) in songs"
-        :key="song.audio_id"
-        :title="song.filename.split(' - ')[1]"
-        :label="song.filename.split(' - ')[0]"
-        class="latest-cell-wrapper"
-        @click="playAudio(songs, index)"
-      >
-      </van-cell>
-    </div>
+    <SongList :songs="songs" />
   </div>
 </template>
 
 <script>
+import SongList from "@/components/SongList";
+
 import { getSingerInfo } from "@/api/singer";
 import { useRoute, onBeforeRouteLeave } from "vue-router";
 import { ref } from "vue";
 
 import useHeader from "@/hooks/useHeader";
-import usePlayer from "@/hooks/usePlayer";
 
 import { useStore } from "vuex";
 
 export default {
   name: "SingerInfo",
+  components: {
+    SongList,
+  },
   setup() {
     const route = useRoute();
     const store = useStore();
@@ -54,7 +48,6 @@ export default {
     let songs = ref([]);
     let isHideIntro = ref(true);
     let routeGuard = useHeader();
-    let { playAudio } = usePlayer();
 
     let toggleIntro = () => {
       console.log("toggleIntro");
@@ -75,7 +68,7 @@ export default {
 
     routeGuard();
 
-    return { isHideIntro, toggleIntro, playAudio, singerCoverURL, singerIntro, songs };
+    return { isHideIntro, toggleIntro, singerCoverURL, singerIntro, songs };
   },
 };
 </script>
@@ -146,49 +139,6 @@ export default {
         background-size: 100%;
       }
     }
-  }
-}
-
-.latest-cell-wrapper {
-  padding: 0 0 0 1.0714rem;
-  height: 4.0714rem;
-  align-items: center;
-  // width: 76%;
-
-  .van-cell__title {
-    display: block;
-    padding-right: 24%;
-    font-size: 0.875rem;
-
-    & + div {
-      height: 100%;
-      width: 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      i {
-        transition: 0.2s;
-        &.playlist-info-intro-hide {
-          transform: rotateZ(-180deg);
-        }
-        text-align: center;
-        font-style: normal;
-        width: 1.0357rem;
-        height: 1.0814rem;
-        display: inline-block;
-        background: url("~@/assets/images/download_icon.png") no-repeat;
-        background-size: 100%;
-      }
-    }
-  }
-  &::after {
-    border-bottom: 1px solid #cecaca;
-    // width: 100%;
-  }
-  .van-cell__value {
-    text-align: left;
-    color: #333;
   }
 }
 </style>

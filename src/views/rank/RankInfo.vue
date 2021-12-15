@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:30:35
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-09 00:37:15
+ * @LastEditTime: 2021-12-16 01:07:56
 -->
 <template>
   <div class="rank-info-wrapper">
@@ -12,24 +12,13 @@
       <img :src="rankCoverURL" alt="排行封面图" />
       <span>上次更新时间：{{ lastUpdateTime }}</span>
     </div>
-    <div class="rank-info-list">
-      <van-cell
-        v-for="(song, index) in songs"
-        :key="song.audio_id"
-        :title="song.filename"
-        :data-rank-before="index + 1"
-        class="latest-cell-wrapper"
-        @click="playAudio(songs, index)"
-      >
-        <template #right-icon>
-          <div @click.stop="downloadAudio()"><i></i></div>
-        </template>
-      </van-cell>
-    </div>
+    <SongList :songs="songs" />
   </div>
 </template>
 
 <script>
+import SongList from "@/components/SongList";
+
 import { useRoute, onBeforeRouteLeave } from "vue-router";
 import { ref } from "vue";
 import { getRankListInfo } from "@/api/rank";
@@ -39,6 +28,9 @@ import usePlayer from "@/hooks/usePlayer";
 
 export default {
   name: "RankInfo",
+  components: {
+    SongList,
+  },
   setup() {
     const route = useRoute();
     const store = useStore();
@@ -99,7 +91,7 @@ export default {
   }
 }
 
-.rank-info-list {
+:deep(.song-cell-list) {
   & > div:nth-child(1) {
     &::before {
       background: #e80000;
@@ -120,7 +112,7 @@ export default {
   }
 }
 
-.latest-cell-wrapper {
+:deep(.song-cell) {
   &::before {
     content: attr(data-rank-before);
     display: inline-block;
@@ -129,47 +121,8 @@ export default {
     line-height: 1.0714rem;
     border-radius: 0.5rem;
     font-size: 0.7143rem;
-    margin-left: calc(~".7143rem - 1.0714rem");
+    margin-left: -0.3571rem;
     margin-right: 0.72rem;
-  }
-}
-
-.latest-cell-wrapper {
-  padding: 0 0 0 1.0714rem;
-  height: 4.0714rem;
-  align-items: center;
-  font-size: 1rem;
-
-  .van-cell__title {
-    display: flex;
-    align-items: center;
-    & + div {
-      height: 100%;
-      width: 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      i {
-        cursor: pointer;
-        text-align: center;
-        font-style: normal;
-        width: 1.0357rem;
-        height: 1.0814rem;
-        display: inline-block;
-        background: url("~@/assets/images/download_icon.png") no-repeat;
-        background-size: 100%;
-      }
-    }
-  }
-  &::after {
-    border-bottom: 1px solid #cecaca;
-    width: 100%;
-  }
-  .van-cell__value {
-    text-align: left;
-    // color: var(--van-cell-value-color);
-    color: #333;
   }
 }
 </style>
