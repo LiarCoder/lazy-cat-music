@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-19 20:10:47
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-30 20:53:36
+ * @LastEditTime: 2021-12-16 19:26:46
 -->
 <template lang="">
   <van-tabs v-model:active="active" color="#33a3f5" title-active-color="#33a3f5" line-width="20%">
@@ -21,14 +21,13 @@ import { ref } from "vue";
 export default {
   name: "HeaderNav",
   setup() {
-    // console.log(this);
     const active = ref(0);
     return { active };
   },
 };
 </script>
 <style lang="less" scoped>
-/deep/ .van-tabs__wrap {
+:deep(.van-tabs__wrap) {
   font-size: 1rem;
   background: #fff;
   height: 3.2143rem !important;
@@ -43,8 +42,6 @@ export default {
   }
 
   .van-tabs__line {
-    // width: 20%;
-    // background-color: #33a3f5;
     height: 0.2143rem;
     margin-bottom: 1px;
     border-radius: 0;

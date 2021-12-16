@@ -4,19 +4,21 @@
  * @Author: LiarCoder
  * @Date: 2021-11-19 20:11:33
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-07 23:32:34
+ * @LastEditTime: 2021-12-16 19:25:35
 -->
 <template lang="">
-  <div class="header-info-container" :style="$store.state.header.headerStyle">
+  <div class="header-info-container" :style="headerStyle">
     <span class="go-back" @click="back()">
       <img src="~@/assets/images/goback_icon_gray.png" alt="返回按钮" />
     </span>
-    {{ $store.state.header.headerInfo }}
+    {{ headerInfo }}
   </div>
 </template>
 <script>
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import useMapper from "@/hooks/useMapper";
+
 export default {
   name: "HeaderInfo",
 
@@ -24,17 +26,18 @@ export default {
     const store = useStore();
     const router = useRouter();
 
+    let { useState } = useMapper();
+
     let back = () => {
       router.back();
     };
 
-    return { back };
+    return { back, ...useState("header", ["headerInfo", "headerStyle"]) };
   },
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .header-info-container {
-  // z-index: 999;
   background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
   padding: 0 2.1429rem;
   position: relative;

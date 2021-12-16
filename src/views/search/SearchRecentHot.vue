@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-26 22:07:04
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-03 15:18:51
+ * @LastEditTime: 2021-12-16 18:46:48
 -->
 <template>
   <div class="search-recent-hot">最近热门</div>
@@ -21,7 +21,9 @@
 import { ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+
 import { getRecentHotList } from "@/api/search";
+import useMapper from "@/hooks/useMapper";
 
 export default {
   name: "SearchRecentHot",
@@ -30,27 +32,28 @@ export default {
     const router = useRouter();
     let recentHotList = ref([]);
 
-    let searchHot = (keyword) => {
-      store.state.search.keyword = keyword;
+    let { useState } = useMapper();
+    let { keyword } = useState("search", ["keyword"]);
+
+    let searchHot = (kw) => {
+      keyword.value.text = kw;
       router.push({ path: "/search/result" });
       store.dispatch("search/search");
     };
-    getRecentHotList().then(
-      (result) => {
-        // console.log(result);
+    getRecentHotList()
+      .then((result) => {
         recentHotList.value = result.data.info;
-      },
-      (error) => {
+      })
+      .catch((error) => {
         console.warn(error);
-      }
-    );
+      });
 
     return { recentHotList, searchHot };
   },
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .search-panel {
   .search-recent-hot {
     height: 2.8571rem;
@@ -62,7 +65,7 @@ export default {
   }
   .van-cell.recent-hot {
     padding: 0 0 0 0.7143rem;
-    .van-cell__title {
+    :deep(.van-cell__title) {
       height: 3.5714rem;
       line-height: 3.5714rem;
       border-bottom: 1px solid #e5e5e5;

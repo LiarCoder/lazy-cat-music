@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-12-02 15:22:46
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-03 14:30:34
+ * @LastEditTime: 2021-12-09 23:34:52
  */
 
 import { getSearchResult } from "@/api/search";
@@ -13,7 +13,7 @@ export default {
   namespaced: true,
   state() {
     return {
-      keyword: "",
+      keyword: { text: "" },
       searchResults: [],
       resultAmount: 0,
     };

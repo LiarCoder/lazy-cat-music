@@ -4,12 +4,12 @@
  * @Author: LiarCoder
  * @Date: 2021-11-19 19:50:29
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-07 16:03:07
+ * @LastEditTime: 2021-12-09 23:12:32
 -->
 <template lang="">
   <div class="header-container">
     <HeaderTop />
-    <HeaderInfo v-if="$store.state.header.isShowHeaderInfo" />
+    <HeaderInfo v-if="isShowHeaderInfo" />
     <HeaderNav v-else />
   </div>
 </template>
@@ -17,6 +17,7 @@
 import HeaderTop from "./HeaderTop";
 import HeaderInfo from "./HeaderInfo";
 import HeaderNav from "./HeaderNav";
+import useMapper from "@/hooks/useMapper";
 
 export default {
   name: "Header",
@@ -24,6 +25,11 @@ export default {
     HeaderTop,
     HeaderInfo,
     HeaderNav,
+  },
+
+  setup() {
+    let { useState } = useMapper();
+    return { ...useState("header", ["isShowHeaderInfo"]) };
   },
 };
 </script>

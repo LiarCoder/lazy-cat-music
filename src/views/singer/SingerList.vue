@@ -4,48 +4,54 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:31:59
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-07 23:49:33
+ * @LastEditTime: 2021-12-16 16:25:50
 -->
 <template>
-  <van-cell
+  <NavCell
     v-for="singer in singers"
-    :key="singer.singerid"
-    :to="`/singer/info/${singer.singerid}`"
-    class="rank-cell-wrapper"
+    :key="singer.id"
+    :to="`/singer/info/${singer.id}`"
+    :info="singer"
+    class="nav-cell__left-icon--small"
   >
-    <template #title>
-      <img :src="singer.imgurl.replace('{size}', '400')" alt="歌手图片" />
-    </template>
-    <template #value>
-      <span>{{ singer.singername }}</span>
-    </template>
-  </van-cell>
+  </NavCell>
 </template>
 
 <script>
-import { getSingerList } from "@/api/singer";
-import { useRoute, onBeforeRouteLeave } from "vue-router";
+import NavCell from "@/components/NavCell";
+
+import { useRoute } from "vue-router";
 import { ref } from "vue";
-import useHeader from "@/hooks/useHeader";
 import { useStore } from "vuex";
+
+import { getSingerList } from "@/api/singer";
+import useHeader from "@/hooks/useHeader";
 
 export default {
   name: "SingerList",
+  components: {
+    NavCell,
+  },
   setup() {
     const route = useRoute();
     const store = useStore();
     let singers = ref([]);
     let routeGuard = useHeader();
 
-    getSingerList(route.params.classID).then(
-      (result) => {
-        singers.value = result.singers.list.info;
+    getSingerList(route.params.classID)
+      .then((result) => {
+        singers.value = result.singers.list.info.map((item) => {
+          return {
+            id: item.singerid,
+            imgURL: item.imgurl,
+            title: item.singername,
+          };
+        });
         store.commit("header/setHeaderInfo", result.classname);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         console.warn(error);
-      }
-    );
+      });
 
     routeGuard();
 
@@ -60,55 +66,14 @@ export default {
 };
 </script>
 
-<style lang="less">
-// .header-info-container {
-//   // background: #fff;
-//   // box-shadow: 0 0.1785rem 0.1785rem 0 #f4f4f4;
-//   .header-info {
-//     // color: #333;
-//   }
-// }
-.rank-cell-wrapper {
-  padding: 0.7143rem 0 0.7143rem 0.7143rem;
-
-  & > img {
-    display: block;
-  }
-
-  .van-cell__title {
-    flex: none;
+<style lang="less" scoped>
+// 注意下面的 :deep() 的位置，否则达不到效果，括号里的那个div选择器是用来占位的，
+// 因为 :deep() 内不能为空，其实可以直接用 ::v-deep 代替，但是控制台会报警告
+.nav-cell.nav-cell__left-icon--small:deep(div) {
+  .nav-cell__left-icon {
     width: 3.3929rem;
     height: 3.3929rem;
-    margin-right: 1.0535rem;
-    img {
-      width: 100%;
-    }
-  }
-  &::after {
-    border-bottom: 1px solid #cecaca;
-    width: 100%;
-  }
-
-  .van-cell__value {
-    text-align: left;
-    // color: var(--van-cell-value-color);
-    color: #333;
-
-    span {
-      padding: 0;
-      margin: 0;
-      width: 100%;
-      min-height: 2.685rem;
-      max-height: 2.685rem;
-      line-height: 2.685rem;
-      display: block;
-      font-size: 1.0714rem;
-      color: #333;
-      // 以下三项用于实现描述信息过长时折叠文本（后面跟上省略号）
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
+    margin-right: 0.9571rem;
   }
 }
 </style>

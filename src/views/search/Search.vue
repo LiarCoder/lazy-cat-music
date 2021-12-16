@@ -4,15 +4,10 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:23:25
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-03 15:11:35
+ * @LastEditTime: 2021-12-16 18:39:19
 -->
 <template>
-  <van-search
-    v-model="$store.state.search.keyword"
-    show-action
-    placeholder="歌手/歌名/拼音"
-    @search="onSearch"
-  >
+  <van-search v-model="keyword.text" show-action placeholder="歌手/歌名/拼音" @search="onSearch">
     <template #action>
       <div @click="onSearch">搜索</div>
     </template>
@@ -29,9 +24,9 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import useMapper from "@/hooks/useMapper";
 
 export default {
   name: "Search",
@@ -39,10 +34,11 @@ export default {
     const router = useRouter();
     const store = useStore();
 
+    let { useState } = useMapper();
+    let { keyword } = useState("search", ["keyword"]);
+
     let onSearch = () => {
-      // console.log(keyword.value);
-      if (!store.state.search.keyword) {
-        console.log(router.currentRoute.value.path);
+      if (!keyword.value.text) {
         router.push({ path: "/search/recent-hot" });
         return;
       }
@@ -51,45 +47,38 @@ export default {
       }
       store.dispatch("search/search");
     };
-    return { onSearch };
+    return { onSearch, keyword };
   },
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .van-search {
   padding: 0.7143rem;
-  .van-search__content {
-    // height: 2.0714rem;
+  :deep(.van-search__content) {
     height: 100%;
-    // background: var(--van-search-content-background-color);
     background: #fff;
     border: 1px solid #e5e5e5;
     border-radius: 5px;
     .van-cell {
       font-size: 1rem;
       i {
-        // font-size: var(--van-field-icon-size);
         font-size: 1rem;
       }
     }
   }
-  .van-search__action {
+  :deep(.van-search__action) {
     background-color: #2ca2f9;
-    // color: #959595;
     color: #fff;
     padding: 0;
     margin-left: 1rem;
     width: 17.25%;
     height: 2rem;
-    // height: 100%;
-    // line-height: 2.0714rem;
     line-height: 2rem;
     vertical-align: middle;
     border-radius: 5px;
     font-size: 1rem;
     text-align: center;
-    // background: #e5e5e5;
   }
 }
 </style>

@@ -4,9 +4,8 @@
  * @Author: LiarCoder
  * @Date: 2021-11-19 15:49:40
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-11-30 19:53:30
+ * @LastEditTime: 2021-12-16 19:48:46
  */
-const path = require("path");
 
 module.exports = {
   lintOnSave: false,

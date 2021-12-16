@@ -4,14 +4,14 @@
  * @Author: LiarCoder
  * @Date: 2021-11-27 19:27:59
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-08 14:39:26
+ * @LastEditTime: 2021-12-16 19:29:41
 -->
 <template>
-  <div class="player-detail" v-show="$store.state.player.status.isShowPlayerDetail">
+  <div class="player-detail" v-show="status.isShowPlayerDetail">
     <div
       class="bg-overlay"
       :style="{
-        backgroundImage: `url(${$store.state.player.audio.singerImg.replace('{size}', '400')})`,
+        backgroundImage: `url(${audio.singerImg.replace('{size}', '400')})`,
       }"
     ></div>
     <div class="player-panel">
@@ -19,19 +19,19 @@
         <span class="go-back" @click="togglePlayerDetail()">
           <img src="~@/assets/images/goback_icon.png" alt="返回按钮" />
         </span>
-        {{ $store.state.player.audio.songName }}
+        {{ audio.songName }}
       </div>
 
       <div class="singer-img">
-        <img :src="$store.state.player.audio.albumImg.replace('{size}', '400')" alt="专辑封面" />
+        <img :src="audio.albumImg.replace('{size}', '400')" alt="专辑封面" />
       </div>
 
       <div class="song-lyrics">
         <div class="lyric-content" :style="{ marginTop: `${-lyricOffset}rem` }">
           <p
-            v-for="lrc in $store.state.player.audio.lyric"
+            v-for="lrc in audio.lyric"
             :class="{
-              'current-lyric': $store.state.player.status.currentTime >= lrc.timestamp - 1,
+              'current-lyric': status.currentTime >= lrc.timestamp - 0.5,
             }"
             :key="lrc.timestamp"
           >
@@ -41,11 +41,11 @@
       </div>
 
       <div class="player-slider">
-        <span>{{ toMMSS(Number($store.state.player.status.currentTime.toFixed())) }}</span>
+        <span>{{ toMMSS(Number(status.currentTime.toFixed())) }}</span>
         <van-slider
-          v-model="$store.state.player.status.currentTime"
+          v-model="status.currentTime"
           ref="slider"
-          :max="$store.state.player.audio.songDuration"
+          :max="audio.songDuration"
           bar-height="0.1785rem"
           active-color="#3195fd"
           inactive-color="#232228"
@@ -57,86 +57,84 @@
             <div class="slider-btn"></div>
           </template>
         </van-slider>
-        <span>{{ toMMSS(Number($store.state.player.audio.songDuration)) }}</span>
+        <span>{{ toMMSS(Number(audio.songDuration)) }}</span>
       </div>
 
       <div class="player-btns">
-        <i class="player-icon-prev" @click="prev()"></i>
+        <i class="player-icon-prev" @click="switchSong('prev')"></i>
         <i
           class="player-icon-play"
-          :class="{ 'player-icon-pause': $store.state.player.status.isPlaying }"
+          :class="{ 'player-icon-pause': status.isPlaying }"
           @click="togglePlayingStatus()"
         ></i>
-        <i class="player-icon-next" @click="next()"></i>
+        <i class="player-icon-next" @click="switchSong('next')"></i>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, ref, watchEffect, onMounted } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { toMMSS } from "@/utils/time";
+import useMapper from "@/hooks/useMapper";
 
 export default {
   name: "PlayerDetail",
   setup() {
     const store = useStore();
-    const value = ref(() => store.state.player.status.currentTime);
     const slider = ref(null);
+
+    let { useState } = useMapper();
+    let { audio, status } = useState("player", ["audio", "status"]);
 
     let lyricOffset = computed(() => {
       let offset = (document.querySelectorAll(".current-lyric").length - 1) * 1.7857;
-      return store.state.player.status.currentTime - store.state.player.status.currentTime + offset;
+      return status.value.currentTime - status.value.currentTime + offset;
     });
 
-    let togglePlayerDetail = () => {
-      store.commit("player/togglePlayerDetail");
-    };
-
-    let onSliderChange = (e) => {
-      console.log(slider.value.modelValue);
+    let onSliderChange = () => {
       store.commit("player/setCurrentTime", slider.value.modelValue);
     };
 
+    let togglePlayerDetail = () => {
+      store.commit("player/toggleStatus", "isShowPlayerDetail");
+    };
+
     let toggleUpdateTime = () => {
-      store.commit("player/toggleSetCurrentTimeManually");
+      store.commit("player/toggleStatus", "isSettingCurrentTimeManually");
     };
 
     let togglePlayingStatus = () => {
-      if (store.state.player.status.isPlaying) {
-        store.state.player.audio.audioEle.pause();
+      if (status.value.isPlaying) {
+        audio.value.audioEle.pause();
       } else {
-        store.state.player.audio.audioEle.play();
+        audio.value.audioEle.play();
       }
-      store.commit("player/togglePlayingStatus");
+      store.commit("player/toggleStatus", "isPlaying");
     };
 
-    let next = () => {
-      store.dispatch("player/next");
-    };
-
-    let prev = () => {
-      store.dispatch("player/prev");
+    let switchSong = (actionType) => {
+      store.dispatch("player/switchSong", actionType);
     };
 
     return {
-      value,
       slider,
       togglePlayerDetail,
       onSliderChange,
       toggleUpdateTime,
       togglePlayingStatus,
-      prev,
-      next,
       lyricOffset,
       toMMSS,
+      switchSong,
+      audio,
+      status,
     };
   },
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .player-detail {
   position: fixed;
   top: 0;
@@ -145,7 +143,6 @@ export default {
   height: 100%;
   z-index: 121;
   .bg-overlay {
-    // margin-top: 62px;
     transform: translateY(3.2143rem);
     width: 100%;
     height: 100%;
@@ -159,7 +156,6 @@ export default {
     backdrop-filter: blur(15px);
     transform: translateY(3.2143rem;);
     background-color: rgba(0, 0, 0, 0.5);
-    // margin-top: 62px;
     height: 100%;
     width: 100%;
     position: fixed;
@@ -206,7 +202,6 @@ export default {
 
     .song-lyrics {
       margin-top: 0.8928rem;
-      // height: 3.8rem;
       height: 68px;
       overflow: hidden;
       text-align: center;
