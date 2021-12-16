@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-12-15 16:54:26
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-16 01:10:41
+ * @LastEditTime: 2021-12-16 19:43:42
 -->
 
 <template>
@@ -31,8 +31,7 @@ export default {
   name: "SongList",
   props: ["songs"],
   setup() {
-    let { playAudio, downloadAudio } = usePlayer();
-    return { playAudio, downloadAudio };
+    return { ...usePlayer() };
   },
 };
 </script>

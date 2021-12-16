@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-12-16 16:37:06
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-16 18:12:14
+ * @LastEditTime: 2021-12-16 19:41:43
 -->
 
 <template>
@@ -31,7 +31,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .intro {
   display: flex;
 

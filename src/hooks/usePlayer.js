@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-12-03 16:02:23
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-09 00:29:54
+ * @LastEditTime: 2021-12-16 18:59:19
  */
 
 import { useStore } from "vuex";
@@ -16,7 +16,6 @@ export default () => {
   const store = useStore();
 
   let playAudio = (songs, index) => {
-    // console.log("playAudio被调用了");
     store.dispatch("player/getSong", { songs, index });
   };
 

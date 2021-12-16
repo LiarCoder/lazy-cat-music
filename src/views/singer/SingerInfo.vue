@@ -4,11 +4,11 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:31:20
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-16 17:01:10
+ * @LastEditTime: 2021-12-16 18:29:53
 -->
 <template>
-  <div class="rank-info-wrapper">
-    <div class="rank-info-top">
+  <div class="singer-info-wrapper">
+    <div class="singer-info-top">
       <img :src="singerCoverURL" alt="歌手图片" />
     </div>
 
@@ -61,10 +61,10 @@ export default {
 };
 </script>
 
-<style lang="less">
-.rank-info-wrapper {
+<style lang="less" scoped>
+.singer-info-wrapper {
   transform: translateY(-3.2143rem);
-  .rank-info-top {
+  .singer-info-top {
     height: 12.5rem;
     position: relative;
     overflow: hidden;

@@ -4,13 +4,13 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:30:35
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-16 01:07:56
+ * @LastEditTime: 2021-12-16 19:46:15
 -->
 <template>
   <div class="rank-info-wrapper">
     <div class="rank-info-top">
       <img :src="rankCoverURL" alt="排行封面图" />
-      <span>上次更新时间：{{ lastUpdateTime }}</span>
+      <span>上次更新时间:{{ lastUpdateTime }}</span>
     </div>
     <SongList :songs="songs" />
   </div>
@@ -19,12 +19,11 @@
 <script>
 import SongList from "@/components/SongList";
 
-import { useRoute, onBeforeRouteLeave } from "vue-router";
+import { useRoute } from "vue-router";
 import { ref } from "vue";
 import { getRankListInfo } from "@/api/rank";
 import { useStore } from "vuex";
 import useHeader from "@/hooks/useHeader";
-import usePlayer from "@/hooks/usePlayer";
 
 export default {
   name: "RankInfo",
@@ -38,7 +37,6 @@ export default {
     let rankCoverURL = ref("");
     let lastUpdateTime = new Date().toLocaleDateString().replaceAll("\/", "-");
     let songs = ref([]);
-    let { playAudio, downloadAudio } = usePlayer();
     let routeGuard = useHeader();
 
     getRankListInfo(route.params.rankID).then(
@@ -54,7 +52,7 @@ export default {
 
     routeGuard();
 
-    return { playAudio, downloadAudio, rankCoverURL, lastUpdateTime, songs };
+    return { rankCoverURL, lastUpdateTime, songs };
   },
 };
 </script>

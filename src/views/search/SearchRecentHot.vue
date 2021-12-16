@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-26 22:07:04
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-16 00:13:09
+ * @LastEditTime: 2021-12-16 18:46:48
 -->
 <template>
   <div class="search-recent-hot">最近热门</div>
@@ -40,21 +40,20 @@ export default {
       router.push({ path: "/search/result" });
       store.dispatch("search/search");
     };
-    getRecentHotList().then(
-      (result) => {
+    getRecentHotList()
+      .then((result) => {
         recentHotList.value = result.data.info;
-      },
-      (error) => {
+      })
+      .catch((error) => {
         console.warn(error);
-      }
-    );
+      });
 
     return { recentHotList, searchHot };
   },
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .search-panel {
   .search-recent-hot {
     height: 2.8571rem;
@@ -66,7 +65,7 @@ export default {
   }
   .van-cell.recent-hot {
     padding: 0 0 0 0.7143rem;
-    .van-cell__title {
+    :deep(.van-cell__title) {
       height: 3.5714rem;
       line-height: 3.5714rem;
       border-bottom: 1px solid #e5e5e5;

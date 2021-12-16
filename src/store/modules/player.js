@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-12-01 14:31:11
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-09 00:09:37
+ * @LastEditTime: 2021-12-16 18:58:30
  */
 
 import { getAudio, getLyric } from "@/api/player";
@@ -17,6 +17,13 @@ export default {
   namespaced: true,
   state() {
     return {
+      /**
+       * 既然下面都已经拿到了原生的音频 DOM 元素了，为什么还要在下方的 status 里特意声明
+       * currentTime 来记录音频的当前播放时间呢？原因是如果直接用原生的 audioEle 中的
+       * currentTime 的话，就没办法做响应式，所以需要特意创建一个中间变量（即下方 status
+       * 中的 currentTime）来存储音频的 currentTime，并在原生 audio 元素身上绑定
+       * timeupdate 监听函数来实时更新 status 中的 currentTime。
+       */
       audio: {
         audioEle: null,
         songUrl: "",

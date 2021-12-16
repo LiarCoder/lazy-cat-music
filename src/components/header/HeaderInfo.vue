@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-19 20:11:33
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-09 23:09:58
+ * @LastEditTime: 2021-12-16 19:25:35
 -->
 <template lang="">
   <div class="header-info-container" :style="headerStyle">
@@ -36,9 +36,8 @@ export default {
   },
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .header-info-container {
-  // z-index: 999;
   background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
   padding: 0 2.1429rem;
   position: relative;

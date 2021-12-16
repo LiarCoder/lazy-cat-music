@@ -4,7 +4,7 @@
  * @Author: LiarCoder
  * @Date: 2021-11-27 19:27:59
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-10 00:23:32
+ * @LastEditTime: 2021-12-16 19:29:41
 -->
 <template>
   <div class="player-detail" v-show="status.isShowPlayerDetail">
@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { computed, ref, watchEffect, onMounted } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { toMMSS } from "@/utils/time";
 import useMapper from "@/hooks/useMapper";
@@ -134,7 +134,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .player-detail {
   position: fixed;
   top: 0;
@@ -143,7 +143,6 @@ export default {
   height: 100%;
   z-index: 121;
   .bg-overlay {
-    // margin-top: 62px;
     transform: translateY(3.2143rem);
     width: 100%;
     height: 100%;
@@ -157,7 +156,6 @@ export default {
     backdrop-filter: blur(15px);
     transform: translateY(3.2143rem;);
     background-color: rgba(0, 0, 0, 0.5);
-    // margin-top: 62px;
     height: 100%;
     width: 100%;
     position: fixed;
@@ -204,7 +202,6 @@ export default {
 
     .song-lyrics {
       margin-top: 0.8928rem;
-      // height: 3.8rem;
       height: 68px;
       overflow: hidden;
       text-align: center;

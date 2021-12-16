@@ -4,11 +4,11 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:29:19
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-16 17:01:13
+ * @LastEditTime: 2021-12-16 18:29:41
 -->
 <template>
-  <div class="rank-info-wrapper">
-    <div class="rank-info-top">
+  <div class="playlist-info-wrapper">
+    <div class="playlist-info-top">
       <img :src="playlistCoverURL" alt="排行封面" />
     </div>
 
@@ -66,10 +66,10 @@ export default {
 };
 </script>
 
-<style lang="less">
-.rank-info-wrapper {
+<style lang="less" scoped>
+.playlist-info-wrapper {
   transform: translateY(-3.2143rem);
-  .rank-info-top {
+  .playlist-info-top {
     height: 12.5rem;
     position: relative;
     overflow: hidden;
