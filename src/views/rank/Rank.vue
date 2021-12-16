@@ -4,108 +4,44 @@
  * @Author: LiarCoder
  * @Date: 2021-11-22 15:22:47
  * @LastEditors: LiarCoder
- * @LastEditTime: 2021-12-01 00:10:15
+ * @LastEditTime: 2021-12-16 15:55:52
 -->
 <template>
-  <van-cell
-    v-for="rank in rankList"
-    :key="rank.rankid"
-    :to="`/rank/info/${rank.rankid}`"
-    class="rank-cell-wrapper"
-  >
-    <template #title>
-      <img :src="rank.imgurl.replace('{size}', '400')" alt="排行封面" />
-    </template>
-    <template #value>
-      <span>{{ rank.rankname }}</span>
-    </template>
-    <template #right-icon>
-      <div class="right-arrow-icon"><i></i></div>
-    </template>
-  </van-cell>
+  <NavCell v-for="rank in rankList" :key="rank.id" :to="`/rank/info/${rank.id}`" :info="rank">
+  </NavCell>
 </template>
 
 <script>
+import NavCell from "@/components/NavCell";
+
 import { getRankList } from "@/api/rank";
 import { ref } from "vue";
 
 export default {
   name: "Rank",
+  components: {
+    NavCell,
+  },
   setup() {
     let rankList = ref([]);
 
-    getRankList().then(
-      (result) => {
-        // console.log(result);
-        rankList.value = result.rank.list;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    getRankList()
+      .then((result) => {
+        rankList.value = result.rank.list.map((item) => {
+          return {
+            id: item.rankid,
+            imgURL: item.imgurl,
+            title: item.rankname,
+          };
+        });
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
 
     return { rankList };
   },
 };
 </script>
 
-<style lang="less">
-.rank-cell-wrapper {
-  padding: 0.7143rem 0 0.7143rem 0.7143rem;
-
-  & > img {
-    display: block;
-  }
-
-  .van-cell__title {
-    flex: none;
-    width: 5.3751rem;
-    height: 5.3751rem;
-    margin-right: 1.0535rem;
-    img {
-      width: 100%;
-    }
-  }
-
-  .van-cell__value {
-    text-align: left;
-    // color: var(--van-cell-value-color);
-    color: #333;
-
-    span {
-      padding: 0;
-      margin: 0;
-      width: 100%;
-      min-height: 2.685rem;
-      max-height: 2.685rem;
-      line-height: 2.685rem;
-      display: block;
-      font-size: 1.0714rem;
-      color: #333;
-      // 以下三项用于实现描述信息过长时折叠文本（后面跟上省略号）
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-  }
-
-  .right-arrow-icon {
-    width: 2.14286rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    i {
-      cursor: pointer;
-      text-align: center;
-      font-style: normal;
-      width: 0.57143rem;
-      height: 1rem;
-      // margin-top: 1.5rem;
-      display: inline-block;
-      background: url("~@/assets/images/arrow_icon.png") no-repeat;
-      background-size: 100%;
-    }
-  }
-}
-</style>
+<style lang="less"></style>
